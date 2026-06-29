@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
 const protectedRoutes = ["/dashboard"];
+const adminRoutes = ["/dashboard/admin"];
 
 // Runtime CORS for /api/* — handles credentials-bearing requests correctly
 // (dynamic per-request origin, required when Access-Control-Allow-Credentials: true)
@@ -43,6 +44,14 @@ export async function proxy(req: NextRequest) {
     const session = await auth.api.getSession({ headers: req.headers });
     if (!session) {
       return NextResponse.redirect(new URL("/login", req.nextUrl));
+    }
+
+    // Admin-only routes: require role === "admin"
+    const isAdminRoute = adminRoutes.some(
+      (route) => path === route || path.startsWith(`${route}/`),
+    );
+    if (isAdminRoute && session.user.role !== "admin") {
+      return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
     }
   }
 

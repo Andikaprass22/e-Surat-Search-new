@@ -1,77 +1,175 @@
+
 generator client {
-    provider = "prisma-client"
-    output   = "../generated/prisma"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
-model user {
-    id             String          @id @default(cuid())
-    name           String
-    email          String          @unique
-    emailVerified  Boolean         @default(false)
-    image          String?
-    createdAt      DateTime        @default(now())
-    updatedAt      DateTime        @updatedAt
-    sessions       session[]
-    accounts       account[]
-    deviceSessions deviceSession[]
+model User {
+  id              String    @id
+  name            String
+  email           String
+  emailVerified   Boolean   @default(false)
+  image           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  role            String?
+  banned          Boolean?  @default(false)
+  banReason       String?
+  banExpires      DateTime?
+  username        String?
+  displayUsername String?
+  sessions        Session[]
+  accounts        Account[]
+
+  @@unique([email])
+  @@unique([username])
+  @@map("user")
 }
 
-model session {
-    id        String   @id @default(cuid())
-    expiresAt DateTime
-    token     String   @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    ipAddress String?
-    userAgent String?
-    userId    String
-    user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Session {
+  id             String   @id
+  expiresAt      DateTime
+  token          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  ipAddress      String?
+  userAgent      String?
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy String?
 
-    @@index([userId])
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
 }
 
-model account {
-    id                    String    @id @default(cuid())
-    accountId             String
-    providerId            String
-    userId                String
-    user                  user      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    accessToken           String?
-    refreshToken          String?
-    idToken               String?
-    accessTokenExpiresAt  DateTime?
-    refreshTokenExpiresAt DateTime?
-    scope                 String?
-    password              String?
-    createdAt             DateTime  @default(now())
-    updatedAt             DateTime  @updatedAt
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
-    @@index([userId])
+  @@index([userId])
+  @@map("account")
 }
 
-model verification {
-    id         String   @id @default(cuid())
-    identifier String
-    value      String
-    expiresAt  DateTime
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-    @@index([identifier])
+  @@index([identifier])
+  @@map("verification")
 }
 
-model deviceSession {
-    id        String   @id @default(cuid())
-    sessionId String
-    userId    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+model Category {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  documents   Document[]
 
-    @@index([userId])
-    @@index([sessionId])
+  @@index([name])
+  @@map("categories")
+}
+
+model Document {
+  id             String         @id @default(cuid())
+  title          String
+  documentNumber String         @unique
+  content        String         @db.Text
+  documentDate   DateTime
+  categoryId     String
+  category       Category       @relation(fields: [categoryId], references: [id])
+  createdById    String
+  updatedById    String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  terms          DocumentTerm[]
+  searchResults  SearchResult[]
+
+  @@index([categoryId])
+  @@index([documentNumber])
+  @@index([documentDate])
+  @@map("documents")
+}
+
+model DocumentTerm {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  term       String
+  tf         Float
+  tfidf      Float
+
+  @@unique([documentId, term])
+  @@index([term])
+  @@index([documentId])
+  @@map("document_terms")
+}
+
+model GlobalTermIdf {
+  term     String @id
+  idf      Float
+  docCount Int
+
+  @@map("global_term_idf")
+}
+
+model SearchHistory {
+  id          String         @id @default(cuid())
+  userId      String
+  query       String
+  resultCount Int
+  createdAt   DateTime       @default(now())
+  results     SearchResult[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("search_histories")
+}
+
+model SearchResult {
+  id              String        @id @default(cuid())
+  searchHistoryId String
+  searchHistory   SearchHistory @relation(fields: [searchHistoryId], references: [id], onDelete: Cascade)
+  documentId      String
+  document        Document      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  relevanceScore  Float
+  rank            Int
+
+  @@index([searchHistoryId])
+  @@index([documentId])
+  @@map("search_results")
+}
+
+model LoginAttempt {
+  id            String    @id @default(cuid())
+  identifier    String
+  failedCount   Int       @default(0)
+  lockedUntil   DateTime?
+  lastAttemptAt DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@unique([identifier])
+  @@index([identifier])
+  @@map("login_attempts")
 }

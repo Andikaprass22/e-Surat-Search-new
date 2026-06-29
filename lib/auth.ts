@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
+import { admin, username } from "better-auth/plugins";
 import { nextCookies } from "better-auth/next-js";
-import { multiSession } from "better-auth/plugins/multi-session";
 import { prisma } from "./prisma";
 
 // Better Auth configuration with Prisma adapter
@@ -14,22 +14,23 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
-  // Email & password authentication using Better Auth
   emailAndPassword: {
     enabled: true,
   },
-  // Session management with cookie cache
   session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // 24 hours
+    expiresIn: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+      maxAge: 5 * 60,
     },
   },
-  plugins: [nextCookies(), multiSession()],
+  plugins: [
+    admin({ adminRoles: ["admin"], defaultRole: "user" }),
+    username(),
+    nextCookies(),
+  ],
   advanced: {
-    // Only send cookies over HTTPS in production
     useSecureCookies: process.env.NODE_ENV === "production",
   },
 });
