@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-const protectedRoutes = ["/dashboard"];
-const adminRoutes = ["/dashboard/admin"];
+const protectedRoutes = ["/dashboard", "/pencarian", "/riwayat", "/template", "/laporan", "/admin"];
+const adminRoutes = ["/admin"];
 
 // Runtime CORS for /api/* — handles credentials-bearing requests correctly
 // (dynamic per-request origin, required when Access-Control-Allow-Credentials: true)

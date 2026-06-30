@@ -1,5 +1,13 @@
 export type UserRole = "admin" | "user";
 
+export interface KategoriListItem {
+  id: string;
+  name: string;
+  description: string | null;
+  documentCount: number;
+  createdAt: Date;
+}
+
 export interface UserListItem {
   id: string;
   name: string;
@@ -7,6 +15,7 @@ export interface UserListItem {
   email: string | null;
   role: UserRole;
   banned: boolean;
+  hasPassword: boolean;
   createdAt: Date;
 }
 

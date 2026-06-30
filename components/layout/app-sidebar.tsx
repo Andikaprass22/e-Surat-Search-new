@@ -36,16 +36,16 @@ type NavItem = {
 };
 
 const userItems: NavItem[] = [
-  { title: "Pencarian", url: "/dashboard/pencarian", icon: FileSearch },
-  { title: "Riwayat", url: "/dashboard/riwayat", icon: History },
-  { title: "Template", url: "/dashboard/template", icon: Sparkles },
-  { title: "Laporan", url: "/dashboard/laporan", icon: BarChart3 },
+  { title: "Pencarian", url: "/pencarian", icon: FileSearch },
+  { title: "Riwayat", url: "/riwayat", icon: History },
+  { title: "Template", url: "/template", icon: Sparkles },
+  { title: "Laporan", url: "/laporan", icon: BarChart3 },
 ];
 
 const adminOnlyItems: NavItem[] = [
-  { title: "Kelola Pengguna", url: "/dashboard/admin/pengguna", icon: Users },
-  { title: "Kelola Kategori", url: "/dashboard/admin/kategori", icon: FolderTree },
-  { title: "Semua Dokumen", url: "/dashboard/admin/dokumen", icon: FileText },
+  { title: "Kelola Pengguna", url: "/admin/pengguna", icon: Users },
+  { title: "Kelola Kategori", url: "/admin/kategori", icon: FolderTree },
+  { title: "Semua Dokumen", url: "/admin/dokumen", icon: FileText },
 ];
 
 const publicItems: NavItem[] = [

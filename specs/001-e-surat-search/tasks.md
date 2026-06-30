@@ -72,12 +72,12 @@
 
 ### Implementasi US1
 
-- [ ] T025 [US1] Buat `app/(public)/login/page.tsx`: halaman login dengan form username + password, animasi Framer Motion `initial={{ opacity: 0, y: 20 }}` pada card login, teks seluruhnya Bahasa Indonesia
-- [ ] T026 [US1] Buat `app/(public)/login/actions.ts`: Server Action `loginAction(formData)` yang: (1) cek LoginAttempt — tolak jika `lockedUntil` masih aktif dengan pesan error Bahasa Indonesia, (2) panggil `auth.api.signInWithUsername`, (3) reset counter jika berhasil, (4) increment counter dan set lock jika gagal (kunci 5 menit setelah 5 percobaan)
-- [ ] T027 [US1] Buat `app/(dashboard)/dashboard/page.tsx`: redirect ke `/dashboard/admin` jika role `admin`, redirect ke `/dashboard/pencarian` jika role `user`
-- [ ] T028 [US1] Buat `app/(dashboard)/admin/layout.tsx`: memanggil `requireAdmin()`, tampilkan forbidden jika bukan admin
-- [ ] T029 [US1] Buat `app/forbidden.tsx`: halaman 403 dengan pesan Bahasa Indonesia dan tombol kembali ke dashboard, animasi Framer Motion
-- [ ] T030 [US1] Buat `app/not-found.tsx`: halaman 404 dengan pesan Bahasa Indonesia dan tombol kembali
+- [x] T025 [US1] Buat `app/(public)/login/page.tsx`: halaman login dengan form username + password, animasi Framer Motion `initial={{ opacity: 0, y: 20 }}` pada card login, teks seluruhnya Bahasa Indonesia
+- [x] T026 [US1] Buat `app/(public)/login/actions.ts`: Server Action `loginAction(formData)` yang: (1) cek LoginAttempt — tolak jika `lockedUntil` masih aktif dengan pesan error Bahasa Indonesia, (2) panggil `auth.api.signInWithUsername`, (3) reset counter jika berhasil, (4) increment counter dan set lock jika gagal (kunci 5 menit setelah 5 percobaan)
+- [x] T027 [US1] Buat `app/(dashboard)/dashboard/page.tsx`: redirect ke `/dashboard/admin` jika role `admin`, redirect ke `/dashboard/pencarian` jika role `user`
+- [x] T028 [US1] Buat `app/(dashboard)/admin/layout.tsx`: memanggil `requireAdmin()`, tampilkan forbidden jika bukan admin
+- [x] T029 [US1] Buat `app/forbidden.tsx`: halaman 403 dengan pesan Bahasa Indonesia dan tombol kembali ke dashboard, animasi Framer Motion
+- [x] T030 [US1] Buat `app/not-found.tsx`: halaman 404 dengan pesan Bahasa Indonesia dan tombol kembali
 
 **Checkpoint**: Login, logout, redirect berbasis role, dan brute-force protection berfungsi penuh
 
@@ -91,12 +91,12 @@
 
 ### Implementasi US2
 
-- [ ] T031 [P] [US2] Buat `lib/data/pengguna.ts`: fungsi `getUserList()` dan `getUserById(id)` dengan `'use cache'` + `cacheTag('pengguna-list')` / `cacheTag(\`pengguna-\${id}\`)`
-- [ ] T032 [US2] Buat `app/(dashboard)/admin/pengguna/actions.ts`: Server Actions `createUser`, `updateUser`, `banUser`, `unbanUser`, `deleteUser` — masing-masing memanggil `requireAdmin()`, melakukan operasi via `auth.api.*`, lalu `updateTag` cache yang relevan (`pengguna-list`, `pengguna-\${id}`)
-- [ ] T033 [US2] Buat `app/(dashboard)/admin/pengguna/page.tsx`: Server Component yang memanggil `getUserList()`, tampilkan dalam tabel menggunakan Shadcn Table, dengan kolom nama, username, email, role, status (badge), dan aksi (dropdown menu)
-- [ ] T034 [P] [US2] Buat `components/pengguna/pengguna-table.tsx`: Client Component (`"use client"`) dengan DataTable menggunakan `@tanstack/react-table`, kolom-kolom sesuai `UserListItem`, dengan sorting dan filtering
-- [ ] T035 [US2] Buat `components/pengguna/pengguna-form-dialog.tsx`: Client Component dialog Shadcn untuk tambah/edit pengguna, dengan form fields: nama, username, email, password (hanya saat buat baru), role (select); menggunakan `useActionState` dengan Server Action
-- [ ] T036 [P] [US2] Buat `components/pengguna/ban-confirm-dialog.tsx`: dialog konfirmasi untuk ban/unban/hapus pengguna dengan animasi Framer Motion `AnimatePresence`
+- [x] T031 [P] [US2] Buat `lib/data/pengguna.ts`: fungsi `getUserList()` dan `getUserById(id)` dengan `'use cache'` + `cacheTag('pengguna-list')` / `cacheTag(\`pengguna-\${id}\`)`
+- [x] T032 [US2] Buat `app/(dashboard)/admin/pengguna/actions.ts`: Server Actions `createUser`, `updateUser`, `banUser`, `unbanUser`, `deleteUser` — masing-masing memanggil `requireAdmin()`, melakukan operasi via `auth.api.*`, lalu `updateTag` cache yang relevan (`pengguna-list`, `pengguna-\${id}`)
+- [x] T033 [US2] Buat `app/(dashboard)/admin/pengguna/page.tsx`: Server Component yang memanggil `getUserList()`, tampilkan dalam tabel menggunakan Shadcn Table, dengan kolom nama, username, email, role, status (badge), dan aksi (dropdown menu)
+- [x] T034 [P] [US2] Buat `components/pengguna/pengguna-table.tsx`: Client Component (`"use client"`) dengan DataTable menggunakan `@tanstack/react-table`, kolom-kolom sesuai `UserListItem`, dengan sorting dan filtering
+- [x] T035 [US2] Buat `components/pengguna/pengguna-form-dialog.tsx`: Client Component dialog Shadcn untuk tambah/edit pengguna, dengan form fields: nama, username, email, password (hanya saat buat baru), role (select); menggunakan `useActionState` dengan Server Action
+- [x] T036 [P] [US2] Buat `components/pengguna/ban-confirm-dialog.tsx`: dialog konfirmasi untuk ban/unban/hapus pengguna dengan animasi Framer Motion `AnimatePresence`
 
 **Checkpoint**: CRUD pengguna oleh admin berfungsi penuh, ban/unban bekerja, cache terinvalidasi dengan benar
 
@@ -110,10 +110,10 @@
 
 ### Implementasi US3
 
-- [ ] T037 [P] [US3] Buat `lib/data/kategori.ts`: fungsi `getKategoriList()` dan `getKategoriById(id)` dengan `'use cache'` + `cacheTag('kategori-list')` / `cacheTag(\`kategori-\${id}\`)`
-- [ ] T038 [US3] Buat `app/(dashboard)/admin/kategori/actions.ts`: Server Actions `createKategori`, `updateKategori`, `deleteKategori` — `deleteKategori` wajib cek apakah kategori masih memiliki dokumen (`prisma.document.count`), tolak dengan error jika ada; masing-masing panggil `updateTag` setelah mutasi
-- [ ] T039 [US3] Buat `app/(dashboard)/admin/kategori/page.tsx`: Server Component tampilkan daftar kategori dalam tabel Shadcn dengan kolom nama, deskripsi, jumlah dokumen, dan aksi (edit/hapus)
-- [ ] T040 [P] [US3] Buat `components/kategori/kategori-form-dialog.tsx`: dialog untuk tambah/edit kategori dengan field nama dan deskripsi opsional
+- [x] T037 [P] [US3] Buat `lib/data/kategori.ts`: fungsi `getKategoriList()` dan `getKategoriById(id)` dengan `'use cache'` + `cacheTag('kategori-list')` / `cacheTag(\`kategori-\${id}\`)`
+- [x] T038 [US3] Buat `app/(dashboard)/admin/kategori/actions.ts`: Server Actions `createKategori`, `updateKategori`, `deleteKategori` — `deleteKategori` wajib cek apakah kategori masih memiliki dokumen (`prisma.document.count`), tolak dengan error jika ada; masing-masing panggil `updateTag` setelah mutasi
+- [x] T039 [US3] Buat `app/(dashboard)/admin/kategori/page.tsx`: Server Component tampilkan daftar kategori dalam tabel Shadcn dengan kolom nama, deskripsi, jumlah dokumen, dan aksi (edit/hapus)
+- [x] T040 [P] [US3] Buat `components/kategori/kategori-form-dialog.tsx`: dialog untuk tambah/edit kategori dengan field nama dan deskripsi opsional
 
 **Checkpoint**: CRUD kategori berfungsi, proteksi penghapusan kategori dengan dokumen aktif
 
