@@ -2,7 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-  // Allow additional origins to access the dev server (development only) For runtime CORS on /api/* routes, see proxy.ts
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
+  },
   allowedDevOrigins: [
     "localhost",
     "localhost:3000",

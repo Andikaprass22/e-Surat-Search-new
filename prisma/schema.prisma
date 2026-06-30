@@ -96,6 +96,7 @@ model Document {
   title          String
   documentNumber String         @unique
   content        String         @db.Text
+  filePath       String?
   documentDate   DateTime
   categoryId     String
   category       Category       @relation(fields: [categoryId], references: [id])

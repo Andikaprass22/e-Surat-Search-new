@@ -127,15 +127,15 @@
 
 ### Implementasi US4
 
-- [ ] T041 [P] [US4] Buat `lib/data/dokumen.ts`: fungsi `getDokumenList(params?)` dan `getDokumenById(id)` dengan `'use cache'` + `cacheTag('dokumen-list')` / `cacheTag(\`dokumen-\${id}\`)`
-- [ ] T042 [US4] Buat `app/(dashboard)/admin/dokumen/actions.ts`: Server Actions `createDokumen`, `updateDokumen`, `deleteDokumen` — setelah create/update panggil `triggerTfidfIndexing(id)`, setelah delete panggil `recalculateGlobalIdf()`; setiap action `updateTag(['dokumen-list', 'tfidf-index'])` dan `updateTag(\`dokumen-\${id}\`)` jika relevan
-- [ ] T043 [US4] Implementasi fungsi `triggerTfidfIndexing(documentId: string)` di `lib/tfidf/engine.ts`: (1) ambil konten dokumen, (2) tokenisasi judul+konten, (3) hitung TF per term, (4) upsert `DocumentTerm` di database, (5) panggil `recalculateGlobalIdf()`
-- [ ] T044 [P] [US4] Implementasi fungsi `recalculateGlobalIdf(affectedTerms?: string[])` di `lib/tfidf/engine.ts`: (1) hitung total dokumen, (2) untuk setiap *affected term* (atau semua jika kosong), group DocumentTerm by term → dapat docCount, (3) hitung IDF = log(totalDokumen / docCount + 1) + 1, (4) upsert hanya `GlobalTermIdf` yang terpengaruh, (5) update nilai `tfidf` di `DocumentTerm` = TF × IDF. *(Optimasi ini wajib agar tidak memblokir server saat CRUD pada skala 10.000 dokumen)*
-- [ ] T045 [US4] Buat `app/(dashboard)/admin/dokumen/page.tsx`: Server Component tampilkan daftar dokumen dalam DataTable dengan kolom judul, nomor surat, tanggal, kategori, dan aksi
-- [ ] T046 [P] [US4] Buat `app/(dashboard)/admin/dokumen/[id]/page.tsx`: halaman detail dokumen dengan semua informasi lengkap
-- [ ] T047 [P] [US4] Buat `components/dokumen/dokumen-form.tsx`: form tambah/edit dokumen dengan fields: judul, nomor surat, tanggal (date picker), konten (textarea), kategori (select dari `getKategoriList()`); menggunakan `useActionState`
-- [ ] T048 [P] [US4] Buat `components/dokumen/dokumen-table.tsx`: DataTable Client Component untuk daftar dokumen dengan sorting, filtering per kategori
-- [ ] T049 [US4] Buat `app/(dashboard)/admin/page.tsx`: dasbor admin dengan statistik: jumlah dokumen, kategori, pengguna aktif — data dari cached functions dengan Framer Motion stagger animation pada card statistik
+- [x] T041 [P] [US4] Buat `lib/data/dokumen.ts`: fungsi `getDokumenList(params?)` dan `getDokumenById(id)` dengan `'use cache'` + `cacheTag('dokumen-list')` / `cacheTag(\`dokumen-\${id}\`)`
+- [x] T042 [US4] Buat `app/(dashboard)/admin/dokumen/actions.ts`: Server Actions `createDokumen`, `updateDokumen`, `deleteDokumen` — setelah create/update panggil `triggerTfidfIndexing(id)`, setelah delete panggil `recalculateGlobalIdf()`; setiap action `updateTag(['dokumen-list', 'tfidf-index'])` dan `updateTag(\`dokumen-\${id}\`)` jika relevan
+- [x] T043 [US4] Implementasi fungsi `triggerTfidfIndexing(documentId: string)` di `lib/tfidf/engine.ts`: (1) ambil konten dokumen, (2) tokenisasi judul+konten, (3) hitung TF per term, (4) upsert `DocumentTerm` di database, (5) panggil `recalculateGlobalIdf()`
+- [x] T044 [P] [US4] Implementasi fungsi `recalculateGlobalIdf(affectedTerms?: string[])` di `lib/tfidf/engine.ts`: (1) hitung total dokumen, (2) untuk setiap *affected term* (atau semua jika kosong), group DocumentTerm by term → dapat docCount, (3) hitung IDF = log(totalDokumen / docCount + 1) + 1, (4) upsert hanya `GlobalTermIdf` yang terpengaruh, (5) update nilai `tfidf` di `DocumentTerm` = TF × IDF. *(Optimasi ini wajib agar tidak memblokir server saat CRUD pada skala 10.000 dokumen)*
+- [x] T045 [US4] Buat `app/(dashboard)/admin/dokumen/page.tsx`: Server Component tampilkan daftar dokumen dalam DataTable dengan kolom judul, nomor surat, tanggal, kategori, dan aksi
+- [x] T046 [P] [US4] Buat `app/(dashboard)/admin/dokumen/[id]/page.tsx`: halaman detail dokumen dengan semua informasi lengkap
+- [x] T047 [P] [US4] Buat `components/dokumen/dokumen-form.tsx`: form tambah/edit dokumen dengan fields: judul, nomor surat, tanggal (date picker), konten (textarea), kategori (select dari `getKategoriList()`); menggunakan `useActionState`
+- [x] T048 [P] [US4] Buat `components/dokumen/dokumen-table.tsx`: DataTable Client Component untuk daftar dokumen dengan sorting, filtering per kategori
+- [x] T049 [US4] Buat `app/(dashboard)/admin/page.tsx`: dasbor admin dengan statistik: jumlah dokumen, kategori, pengguna aktif — data dari cached functions dengan Framer Motion stagger animation pada card statistik
 
 **Checkpoint**: CRUD dokumen berfungsi penuh, TF-IDF auto-indexed setiap mutasi dokumen
 
@@ -149,14 +149,14 @@
 
 ### Implementasi US5
 
-- [ ] T050 [US5] Implementasi fungsi `getTfidfIndex()` di `lib/tfidf/engine.ts`: async function dengan `'use cache'` + `cacheTag('tfidf-index')` + `cacheLife('hours')` — query semua `DocumentTerm` dan `GlobalTermIdf` dari Prisma, kembalikan sebagai `TfidfIndex` map
-- [ ] T051 [P] [US5] Implementasi fungsi `computeSearchResults(query: string, index: TfidfIndex, userId: string)` di `lib/tfidf/engine.ts`: (1) tokenisasi query, (2) untuk setiap dokumen di index hitung cosine similarity, (3) sort descending, (4) simpan ke `SearchHistory` + `SearchResult` di Prisma, (5) invalidasi `updateTag(\`riwayat-\${userId}\`)` dan `updateTag(\`laporan-\${userId}\`)`, (6) kembalikan hasil terurut
-- [ ] T052 [US5] Buat `app/(dashboard)/pencarian/actions.ts`: Server Action `searchDokumenAction(query: string)` — panggil `requireUser()`, validasi input (tidak boleh kosong, max 500 karakter), panggil `getTfidfIndex()` lalu `computeSearchResults()`, kembalikan `{ historyId, results }`
-- [ ] T053 [US5] Buat `app/(dashboard)/pencarian/page.tsx`: Server Component halaman pencarian dengan `SearchBar` dan area hasil
-- [ ] T054 [P] [US5] Buat `components/pencarian/search-bar.tsx`: Client Component dengan input pencarian, tombol cari, state loading menggunakan `useActionState`, animasi Framer Motion pada tombol dan input focus
-- [ ] T055 [P] [US5] Buat `components/pencarian/search-results.tsx`: Client Component menampilkan hasil pencarian — setiap hasil tampilkan `SearchResultCard` dengan judul, nomor surat, tanggal, kategori, dan skor relevansi (progress bar visual); animasi `staggerChildren` Framer Motion untuk tiap kartu muncul bertahap
-- [ ] T056 [P] [US5] Buat `components/pencarian/search-result-card.tsx`: Card komponen untuk satu hasil pencarian — tampilkan badge skor relevansi (0–100%), highlight informasi dokumen; animasi `whileHover={{ scale: 1.01 }}` dan `motion.div` dengan `initial={{ opacity: 0, y: 20 }}`
-- [ ] T057 [P] [US5] Buat `components/pencarian/empty-search.tsx`: komponen tampilan saat tidak ada hasil pencarian atau belum ada pencarian, dengan ilustrasi dan teks Bahasa Indonesia
+- [x] T050 [US5] Implementasi fungsi `getTfidfIndex()` di `lib/tfidf/engine.ts`: async function dengan `'use cache'` + `cacheTag('tfidf-index')` + `cacheLife('hours')` — query semua `DocumentTerm` dan `GlobalTermIdf` dari Prisma, kembalikan sebagai `TfidfIndex` map
+- [x] T051 [P] [US5] Implementasi fungsi `computeSearchResults(query: string, index: TfidfIndex, userId: string)` di `lib/tfidf/engine.ts`: (1) tokenisasi query, (2) untuk setiap dokumen di index hitung cosine similarity, (3) sort descending, (4) simpan ke `SearchHistory` + `SearchResult` di Prisma, (5) invalidasi `updateTag(\`riwayat-\${userId}\`)` dan `updateTag(\`laporan-\${userId}\`)`, (6) kembalikan hasil terurut
+- [x] T052 [US5] Buat `app/(dashboard)/pencarian/actions.ts`: Server Action `searchDokumenAction(query: string)` — panggil `requireUser()`, validasi input (tidak boleh kosong, max 500 karakter), panggil `getTfidfIndex()` lalu `computeSearchResults()`, kembalikan `{ historyId, results }`
+- [x] T053 [US5] Buat `app/(dashboard)/pencarian/page.tsx`: Server Component halaman pencarian dengan `SearchBar` dan area hasil
+- [x] T054 [P] [US5] Buat `components/pencarian/search-bar.tsx`: Client Component dengan input pencarian, tombol cari, state loading menggunakan `useActionState`, animasi Framer Motion pada tombol dan input focus
+- [x] T055 [P] [US5] Buat `components/pencarian/search-results.tsx`: Client Component menampilkan hasil pencarian — setiap hasil tampilkan `SearchResultCard` dengan judul, nomor surat, tanggal, kategori, dan skor relevansi (progress bar visual); animasi `staggerChildren` Framer Motion untuk tiap kartu muncul bertahap
+- [x] T056 [P] [US5] Buat `components/pencarian/search-result-card.tsx`: Card komponen untuk satu hasil pencarian — tampilkan badge skor relevansi (0–100%), highlight informasi dokumen; animasi `whileHover={{ scale: 1.01 }}` dan `motion.div` dengan `initial={{ opacity: 0, y: 20 }}`
+- [x] T057 [P] [US5] Buat `components/pencarian/empty-search.tsx`: komponen tampilan saat tidak ada hasil pencarian atau belum ada pencarian, dengan ilustrasi dan teks Bahasa Indonesia
 
 **Checkpoint**: Pencarian TF-IDF berfungsi, hasil terurut berdasarkan relevansi, riwayat tersimpan otomatis, UI responsif dengan animasi
 
@@ -170,13 +170,13 @@
 
 ### Implementasi US6
 
-- [ ] T058 [P] [US6] Buat `lib/data/riwayat.ts`: fungsi `getRiwayatList(userId: string)` dengan `'use cache'` + `cacheTag(\`riwayat-\${userId}\`)`, dan `getRiwayatDetail(historyId, userId)` dengan `cacheTag(\`riwayat-detail-\${historyId}\`)`
-- [ ] T059 [P] [US6] Buat `lib/data/laporan.ts`: fungsi `getLaporanRingkasan(userId: string)` dengan `'use cache'` + `cacheTag(\`laporan-\${userId}\`)` + `cacheLife('minutes')` — hitung total pencarian, top 10 kata kunci tersering, tren 7 hari terakhir dari `SearchHistory`
-- [ ] T060 [US6] Buat `app/(dashboard)/riwayat/page.tsx`: Server Component yang memanggil `requireUser()` dan `getRiwayatList(userId)`, tampilkan daftar riwayat dalam tabel/list dengan tanggal, kata kunci, dan jumlah hasil; setiap baris dapat diklik untuk lihat detail
-- [ ] T061 [US6] Buat `app/(dashboard)/riwayat/[id]/page.tsx`: Server Component yang memanggil `getRiwayatDetail(id, userId)`, tampilkan kembali hasil pencarian menggunakan `SearchResultCard` yang sama dari US5 — data dari Prisma via cache
-- [ ] T062 [US6] Buat `app/(dashboard)/laporan/page.tsx`: Server Component yang memanggil `getLaporanRingkasan(userId)`, tampilkan ringkasan: jumlah total pencarian (stat card), daftar kata kunci tersering (badge list), tren pencarian harian (sederhana: list dengan tanggal dan jumlah); semua teks Bahasa Indonesia
-- [ ] T063 [P] [US6] Buat `components/laporan/laporan-stats-card.tsx`: Client Component card statistik dengan Framer Motion counter animation untuk angka total pencarian
-- [ ] T064 [P] [US6] Buat `components/laporan/keyword-trend-list.tsx`: menampilkan daftar kata kunci tersering dengan badge frekuensi, animasi stagger masuk
+- [x] T058 [P] [US6] Buat `lib/data/riwayat.ts`: fungsi `getRiwayatList(userId: string)` dengan `'use cache'` + `cacheTag(\`riwayat-\${userId}\`)`, dan `getRiwayatDetail(historyId, userId)` dengan `cacheTag(\`riwayat-detail-\${historyId}\`)`
+- [x] T059 [P] [US6] Buat `lib/data/laporan.ts`: fungsi `getLaporanRingkasan(userId: string)` dengan `'use cache'` + `cacheTag(\`laporan-\${userId}\`)` + `cacheLife('minutes')` — hitung total pencarian, top 10 kata kunci tersering, tren 7 hari terakhir dari `SearchHistory`
+- [x] T060 [US6] Buat `app/(dashboard)/riwayat/page.tsx`: Server Component yang memanggil `requireUser()` dan `getRiwayatList(userId)`, tampilkan daftar riwayat dalam tabel/list dengan tanggal, kata kunci, dan jumlah hasil; setiap baris dapat diklik untuk lihat detail
+- [x] T061 [US6] Buat `app/(dashboard)/riwayat/[id]/page.tsx`: Server Component yang memanggil `getRiwayatDetail(id, userId)`, tampilkan kembali hasil pencarian menggunakan `SearchResultCard` yang sama dari US5 — data dari Prisma via cache
+- [x] T062 [US6] Buat `app/(dashboard)/laporan/page.tsx`: Server Component yang memanggil `getLaporanRingkasan(userId)`, tampilkan ringkasan: jumlah total pencarian (stat card), daftar kata kunci tersering (badge list), tren pencarian harian (sederhana: list dengan tanggal dan jumlah); semua teks Bahasa Indonesia
+- [x] T063 [P] [US6] Buat `components/laporan/laporan-stats-card.tsx`: Client Component card statistik dengan Framer Motion counter animation untuk angka total pencarian
+- [x] T064 [P] [US6] Buat `components/laporan/keyword-trend-list.tsx`: menampilkan daftar kata kunci tersering dengan badge frekuensi, animasi stagger masuk
 
 **Checkpoint**: Riwayat pencarian dapat diakses, detail riwayat menampilkan hasil sebelumnya, laporan ringkasan tersedia
 

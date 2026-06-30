@@ -48,5 +48,8 @@ next-env.d.ts
 # prisma migrations
 /prisma/migrations
 
+# uploaded document files
+/uploads
+
 # claude
 .claude

@@ -30,6 +30,7 @@ export interface DokumenListItem {
 
 export interface DokumenDetail extends DokumenListItem {
   konten: string;
+  filePath: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -47,6 +48,7 @@ export interface SearchResultItem {
       nama: string;
     };
   };
+  hasFilePath: boolean;
 }
 
 export interface RiwayatItem {

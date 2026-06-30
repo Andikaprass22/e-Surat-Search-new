@@ -1,7 +1,20 @@
-import { FileText, Clock } from "lucide-react";
+import { Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FileText, Loader2 } from "lucide-react";
+import { getDokumenList } from "@/lib/data/dokumen";
+import { getKategoriList } from "@/lib/data/kategori";
+import { DokumenSection } from "@/components/dokumen/dokumen-section";
 
-export default function SemuaDokumenPage() {
+function DokumenFallback() {
+  return (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-8">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <span>Memuat daftar dokumen...</span>
+    </div>
+  );
+}
+
+export default async function SemuaDokumenPage() {
   return (
     <Card className="border-2">
       <CardHeader className="border-b bg-muted/30">
@@ -11,15 +24,20 @@ export default function SemuaDokumenPage() {
         </div>
       </CardHeader>
       <CardContent className="pt-6">
-        <div className="flex flex-col items-center gap-3 text-center py-10">
-          <Clock className="h-10 w-10 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Segera Hadir</h2>
-          <p className="text-sm text-muted-foreground max-w-md">
-            Daftar dan manajemen seluruh dokumen akan tersedia setelah fase
-            Manajemen Dokumen selesai diimplementasikan.
-          </p>
-        </div>
+        <Suspense fallback={<DokumenFallback />}>
+          <DokumenLoader />
+        </Suspense>
       </CardContent>
     </Card>
+  );
+}
+
+async function DokumenLoader() {
+  const [dokumen, kategori] = await Promise.all([
+    getDokumenList(),
+    getKategoriList(),
+  ]);
+  return (
+    <DokumenSection initialData={dokumen} kategoriOptions={kategori} />
   );
 }

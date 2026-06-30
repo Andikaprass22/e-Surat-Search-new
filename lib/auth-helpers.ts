@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { redirect, forbidden } from "next/navigation";
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -42,7 +42,7 @@ export async function requireSession(): Promise<AuthUser> {
 export async function requireAdmin(): Promise<AuthUser> {
   const user = await requireSession();
   if (user.role !== "admin") {
-    forbidden();
+    redirect("/dashboard");
   }
   return user;
 }
@@ -50,7 +50,7 @@ export async function requireAdmin(): Promise<AuthUser> {
 export async function requireUser(): Promise<AuthUser> {
   const user = await requireSession();
   if (user.role !== "user") {
-    forbidden();
+    redirect("/admin");
   }
   return user;
 }
