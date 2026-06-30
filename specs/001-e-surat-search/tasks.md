@@ -186,19 +186,19 @@
 
 **Tujuan**: Pemoles UI, konsistensi Bahasa Indonesia, loading states, dan pengalaman pengguna
 
-- [ ] T065 Buat `app/loading.tsx` global loading skeleton menggunakan Shadcn `Skeleton` + Framer Motion pulse
-- [ ] T066 [P] Buat `app/(dashboard)/pencarian/loading.tsx`: skeleton khusus halaman pencarian (search bar placeholder + result card skeletons)
-- [ ] T067 [P] Buat `app/(dashboard)/admin/dokumen/loading.tsx`: skeleton tabel dokumen
-- [ ] T068 [P] Buat `app/(dashboard)/admin/pengguna/loading.tsx`: skeleton tabel pengguna
-- [ ] T069 Buat `components/ui/confirm-dialog.tsx`: komponen dialog konfirmasi reusable dengan `AnimatePresence` Framer Motion — digunakan untuk hapus dokumen, kategori, dan pengguna
-- [ ] T070 [P] Buat `components/ui/page-header.tsx`: header halaman reusable dengan judul, deskripsi opsional, dan slot action button; animasi `initial={{ opacity: 0, x: -10 }}`
-- [ ] T071 [P] Buat `components/ui/stat-card.tsx`: card statistik reusable untuk dasbor admin dan laporan
-- [ ] T072 Audit semua teks UI: pastikan seluruh label, pesan error, pesan sukses, placeholder, dan teks antarmuka menggunakan Bahasa Indonesia
-- [ ] T073 [P] Pastikan semua form memiliki validasi client-side dengan pesan error Bahasa Indonesia dan validasi server-side di Server Actions
-- [ ] T074 Jalankan `bun run typecheck` untuk memastikan tidak ada TypeScript error
-- [ ] T075 Jalankan `bun run build` untuk memastikan production build berhasil tanpa error
-- [ ] T076 Lakukan manual end-to-end verification sesuai Verification Plan di `plan.md`: autentikasi, manajemen pengguna, CRUD dokumen/kategori, pencarian TF-IDF, riwayat, laporan, brute-force protection
-- [ ] T077 Buat skrip `prisma/seed-mock.ts` untuk men-*generate* 10.000 dokumen percobaan dan catat waktu eksekusi pencarian untuk memvalidasi SC-001 (Pencarian < 5 detik).
+- [x] T065 Buat `app/loading.tsx` global loading skeleton menggunakan Shadcn `Skeleton` + Framer Motion pulse
+- [x] T066 [P] Buat `app/(dashboard)/pencarian/loading.tsx`: skeleton khusus halaman pencarian (search bar placeholder + result card skeletons)
+- [x] T067 [P] Buat `app/(dashboard)/admin/dokumen/loading.tsx`: skeleton tabel dokumen
+- [x] T068 [P] Buat `app/(dashboard)/admin/pengguna/loading.tsx`: skeleton tabel pengguna
+- [x] T069 Buat `components/ui/confirm-dialog.tsx`: komponen dialog konfirmasi reusable dengan `AnimatePresence` Framer Motion — digunakan untuk hapus dokumen, kategori, dan pengguna
+- [x] T070 [P] Buat `components/ui/page-header.tsx`: header halaman reusable dengan judul, deskripsi opsional, dan slot action button; animasi `initial={{ opacity: 0, x: -10 }}`
+- [x] T071 [P] Buat `components/ui/stat-card.tsx`: card statistik reusable untuk dasbor admin dan laporan
+- [x] T072 Audit semua teks UI: pastikan seluruh label, pesan error, pesan sukses, placeholder, dan teks antarmuka menggunakan Bahasa Indonesia
+- [x] T073 [P] Pastikan semua form memiliki validasi client-side dengan pesan error Bahasa Indonesia dan validasi server-side di Server Actions
+- [x] T074 Jalankan `bun run typecheck` untuk memastikan tidak ada TypeScript error
+- [x] T075 Jalankan `bun run build` untuk memastikan production build berhasil tanpa error
+- [x] T076 Lakukan manual end-to-end verification sesuai Verification Plan di `plan.md`: autentikasi, manajemen pengguna, CRUD dokumen/kategori, pencarian TF-IDF, riwayat, laporan, brute-force protection
+- [x] T077 Buat skrip `prisma/seed-mock.ts` untuk men-*generate* 10.000 dokumen percobaan dan catat waktu eksekusi pencarian untuk memvalidasi SC-001 (Pencarian < 5 detik).
 
 ---
 

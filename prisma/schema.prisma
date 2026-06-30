@@ -162,6 +162,18 @@ model SearchResult {
   @@map("search_results")
 }
 
+model SearchTemplate {
+  id        String   @id @default(cuid())
+  userId    String
+  label     String
+  query     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("search_templates")
+}
+
 model LoginAttempt {
   id            String    @id @default(cuid())
   identifier    String

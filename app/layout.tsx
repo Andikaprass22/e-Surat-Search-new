@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CodeNight Starter",
+  title: "e-Surat Search",
   description:
-    "A starter template for building a full-stack application with Next.js, Prisma, and UploadThing. It includes authentication, file uploads, and a dashboard layout.",
+    "Aplikasi pencarian dokumen dan surat berbasis TF-IDF untuk organisasi internal.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="id" className={inter.variable}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

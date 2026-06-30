@@ -68,6 +68,13 @@ export interface LaporanRingkasan {
   trendHarian: { tanggal: string; count: number }[];
 }
 
+export interface TemplateItem {
+  id: string;
+  label: string;
+  query: string;
+  createdAt: Date;
+}
+
 export type TfidfIndex = {
   // Map dari term ke dokumen id dan term frequency-nya (tf * idf)
   [term: string]: {

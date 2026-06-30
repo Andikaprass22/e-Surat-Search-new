@@ -16,4 +16,6 @@ export const CACHE_TAGS = {
   RIWAYAT: (userId: string) => `riwayat-${userId}`,
   RIWAYAT_DETAIL: (historyId: string) => `riwayat-detail-${historyId}`,
   LAPORAN: (userId: string) => `laporan-${userId}`,
+  TEMPLATE_LIST: (userId: string) => `template-list-${userId}`,
+  TEMPLATE: (id: string) => `template-${id}`,
 } as const;

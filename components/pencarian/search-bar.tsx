@@ -8,11 +8,15 @@ import { EmptySearch } from "@/components/pencarian/empty-search";
 import type { SearchResultItem } from "@/types";
 import type { SearchApiResponse } from "@/app/api/pencarian/route";
 
-export function SearchBar() {
-  const [query, setQuery] = useState("");
+export function SearchBar({
+  initialQuery = "",
+}: {
+  initialQuery?: string;
+}) {
+  const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [hasSearched, setHasSearched] = useState(!!initialQuery);
   const [error, setError] = useState<string | null>(null);
   const [focused, setFocused] = useState(false);
 

@@ -76,7 +76,7 @@ export function ResetPasswordForm({
       </p>
 
       <div className="space-y-2">
-        <Label htmlFor="new-password">Password Baru</Label>
+                    <Label htmlFor="new-password">Kata Sandi Baru</Label>
         <Input
           id="new-password"
           type="password"
@@ -91,7 +91,7 @@ export function ResetPasswordForm({
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="confirm-password">Konfirmasi Password Baru</Label>
+                    <Label htmlFor="confirm-password">Konfirmasi Kata Sandi Baru</Label>
         <Input
           id="confirm-password"
           type="password"

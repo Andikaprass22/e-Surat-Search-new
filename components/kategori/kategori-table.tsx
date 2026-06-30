@@ -106,7 +106,7 @@ export function KategoriTable({
                 <DropdownMenuItem
                   onSelect={() => onAction({ type: "edit", kategori: k })}
                 >
-                  Edit kategori
+                  Ubah kategori
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

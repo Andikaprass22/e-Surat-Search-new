@@ -8,7 +8,6 @@ import {
   FolderTree,
   FileText,
   ShieldCheck,
-  FileSearch,
   History,
   Sparkles,
   BarChart3,
@@ -95,12 +94,6 @@ const adminShortcuts: Shortcut[] = [
 
 const userShortcuts: Shortcut[] = [
   {
-    title: "Pencarian",
-    description: "Cari dokumen dengan TF-IDF",
-    url: "/pencarian",
-    icon: FileSearch,
-  },
-  {
     title: "Riwayat",
     description: "Lihat riwayat pencarian",
     url: "/riwayat",
@@ -108,10 +101,9 @@ const userShortcuts: Shortcut[] = [
   },
   {
     title: "Template",
-    description: "Template surat BMN",
+    description: "Simpan pola pencarian untuk digunakan kembali",
     url: "/template",
     icon: Sparkles,
-    badge: "Segera",
   },
   {
     title: "Laporan",

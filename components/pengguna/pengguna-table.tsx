@@ -61,7 +61,7 @@ export function PenggunaTable({
       },
       {
         accessorKey: "username",
-        header: "Username",
+        header: "Nama Pengguna",
         cell: ({ row }) => (
           <span className="text-muted-foreground">
             {row.original.username ?? "—"}
@@ -79,7 +79,7 @@ export function PenggunaTable({
       },
       {
         accessorKey: "role",
-        header: "Role",
+        header: "Peran",
         cell: ({ row }) => {
           const role = row.original.role;
           return (
@@ -147,7 +147,7 @@ export function PenggunaTable({
                 <DropdownMenuItem
                   onSelect={() => onAction({ type: "edit", user: u })}
                 >
-                  Edit data
+                  Ubah data
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={() => onAction({ type: "reset-password", user: u })}

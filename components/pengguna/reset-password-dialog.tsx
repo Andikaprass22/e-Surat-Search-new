@@ -13,7 +13,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -80,7 +79,7 @@ export function ResetPasswordDialog({
           transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <DialogHeader>
-            <DialogTitle>Reset Password {user.name}</DialogTitle>
+                <DialogTitle>Atur Ulang Kata Sandi {user.name}</DialogTitle>
             <DialogDescription>
               Masukkan password baru. Pengguna harus menggunakan password ini
               saat login berikutnya — sesi aktif akan dihentikan.
@@ -99,7 +98,7 @@ export function ResetPasswordDialog({
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 pt-2">
               <div className="space-y-2">
-                <Label htmlFor="new-password">Password Baru</Label>
+                <Label htmlFor="new-password">Kata Sandi Baru</Label>
                 <PasswordInput
                   id="new-password"
                   minLength={8}
@@ -114,7 +113,7 @@ export function ResetPasswordDialog({
 
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">
-                  Konfirmasi Password Baru
+                    Konfirmasi Kata Sandi Baru
                 </Label>
                 <PasswordInput
                   id="confirm-password"

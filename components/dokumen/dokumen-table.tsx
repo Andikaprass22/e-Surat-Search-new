@@ -134,7 +134,7 @@ export function DokumenTable({
                 <DropdownMenuItem
                   onSelect={() => onAction({ type: "edit", dokumen: d })}
                 >
-                  Edit dokumen
+                  Ubah dokumen
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

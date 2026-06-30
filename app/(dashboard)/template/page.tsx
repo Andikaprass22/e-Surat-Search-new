@@ -1,7 +1,23 @@
-import { Sparkles, Clock } from "lucide-react";
+import { Suspense } from "react";
+import { Sparkles, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { requireSession } from "@/lib/auth-helpers";
+import { getTemplateList } from "@/lib/data/template";
+import { TemplateSection } from "@/components/template/template-section";
 
-export default function TemplatePage() {
+function TemplateFallback() {
+  return (
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-8">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <span>Memuat template...</span>
+    </div>
+  );
+}
+
+export default async function TemplatePage() {
+  const user = await requireSession();
+  const templates = await getTemplateList(user.id);
+
   return (
     <Card className="border-2">
       <CardHeader className="border-b bg-muted/30">
@@ -11,14 +27,9 @@ export default function TemplatePage() {
         </div>
       </CardHeader>
       <CardContent className="pt-6">
-        <div className="flex flex-col items-center gap-3 text-center py-10">
-          <Clock className="h-10 w-10 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Segera Hadir</h2>
-          <p className="text-sm text-muted-foreground max-w-md">
-            Koleksi template pencarian akan tersedia setelah fase Template
-            selesai diimplementasikan.
-          </p>
-        </div>
+        <Suspense fallback={<TemplateFallback />}>
+          <TemplateSection initialData={templates} />
+        </Suspense>
       </CardContent>
     </Card>
   );

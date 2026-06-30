@@ -26,7 +26,7 @@ export default async function ResetPasswordPage({
       <CardHeader className="border-b bg-muted/30">
         <div className="flex items-center gap-2">
           <KeyRound className="h-5 w-5 text-primary" />
-          <CardTitle>Reset Password</CardTitle>
+          <CardTitle>Atur Ulang Kata Sandi</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pt-6">

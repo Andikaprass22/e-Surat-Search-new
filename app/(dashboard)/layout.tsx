@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { requireSession } from "@/lib/auth-helpers";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Header } from "@/components/layout/header";
@@ -25,20 +25,18 @@ async function DashboardShell({
   const user = await requireSession();
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen bg-background">
-        <AppSidebar user={user} />
-        <div className="flex flex-1 flex-col">
-          <Header user={user} />
-          <main className="flex-1 px-6 py-8">{children}</main>
-        </div>
-      </div>
+      <AppSidebar user={user} />
+      <SidebarInset>
+        <Header user={user} />
+        <div className="flex min-w-0 grow flex-col px-6 py-8">{children}</div>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
 
 export function DashboardSkeleton() {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex w-full min-h-screen bg-background">
       <div className="hidden w-64 border-r bg-card p-4 md:block">
         <Skeleton className="h-6 w-32" />
         <div className="mt-8 space-y-3">
