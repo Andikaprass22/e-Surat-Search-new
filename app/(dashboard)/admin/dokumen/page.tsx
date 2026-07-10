@@ -1,6 +1,5 @@
 import { Suspense } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { getDokumenList } from "@/lib/data/dokumen";
 import { getKategoriList } from "@/lib/data/kategori";
 import { DokumenSection } from "@/components/dokumen/dokumen-section";
@@ -16,19 +15,15 @@ function DokumenFallback() {
 
 export default async function SemuaDokumenPage() {
   return (
-    <Card className="border-2">
-      <CardHeader className="border-b bg-muted/30">
-        <div className="flex items-center gap-2">
-          <FileText className="h-5 w-5 text-primary" />
-          <CardTitle>Semua Dokumen</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <Suspense fallback={<DokumenFallback />}>
-          <DokumenLoader />
-        </Suspense>
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-bold tracking-tight">Semua Dokumen</h1>
+        <p className="text-muted-foreground">Kelola dan sinkronisasi indeks pencarian dokumen.</p>
+      </div>
+      <Suspense fallback={<DokumenFallback />}>
+        <DokumenLoader />
+      </Suspense>
+    </div>
   );
 }
 

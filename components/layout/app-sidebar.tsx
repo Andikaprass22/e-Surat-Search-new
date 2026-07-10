@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   FileSearch,
@@ -69,15 +68,9 @@ export function AppSidebar({ user }: { user: AuthUser }) {
     return (
       <SidebarMenuItem key={item.url}>
         <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
-          <Link href={item.url} className="relative">
-            <motion.span
-              whileHover={{ x: 4 }}
-              transition={{ type: "spring", stiffness: 400, damping: 30 }}
-              className="flex w-full items-center gap-2"
-            >
-              <Icon className="h-4 w-4" />
-              <span>{item.title}</span>
-            </motion.span>
+          <Link href={item.url} className="group flex items-center gap-2">
+            <Icon className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
+            <span className="truncate">{item.title}</span>
           </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
@@ -86,12 +79,14 @@ export function AppSidebar({ user }: { user: AuthUser }) {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b">
-        <div className="flex items-center gap-2 px-2 py-3">
-          <ShieldCheck className="h-5 w-5 text-primary" />
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">e-Surat Search</span>
-            <span className="text-xs text-muted-foreground">Pencarian BMN</span>
+      <SidebarHeader className="border-b px-4 py-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[4px] bg-primary">
+            <div className="h-3.5 w-3.5 bg-background rounded-[2px]" />
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="truncate text-[15px] font-semibold tracking-tight text-foreground uppercase">e-Surat</span>
+            <span className="truncate text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Sistem Arsip</span>
           </div>
         </div>
       </SidebarHeader>
@@ -119,17 +114,15 @@ export function AppSidebar({ user }: { user: AuthUser }) {
           </SidebarGroup>
         ) : null}
       </SidebarContent>
-      <SidebarFooter className="border-t p-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex flex-col truncate">
-            <span className="truncate text-sm font-medium">{user.name}</span>
-            <span className="truncate text-xs text-muted-foreground">
-              {user.email}
-            </span>
+      <SidebarFooter className="border-t p-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted border font-medium text-muted-foreground">
+            {user.name.charAt(0).toUpperCase()}
           </div>
-          <Badge variant={isAdmin ? "default" : "secondary"}>
-            {isAdmin ? "Admin" : "User"}
-          </Badge>
+          <div className="flex flex-col min-w-0 flex-1">
+            <span className="truncate text-sm font-medium text-foreground">{user.name}</span>
+            <span className="truncate text-xs text-muted-foreground">{user.email}</span>
+          </div>
         </div>
       </SidebarFooter>
     </Sidebar>

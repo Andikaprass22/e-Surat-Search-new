@@ -1,6 +1,5 @@
 import { Suspense } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 import { requireSession } from "@/lib/auth-helpers";
 import { getTemplateList } from "@/lib/data/template";
 import { TemplateSection } from "@/components/template/template-section";
@@ -19,18 +18,14 @@ export default async function TemplatePage() {
   const templates = await getTemplateList(user.id);
 
   return (
-    <Card className="border-2">
-      <CardHeader className="border-b bg-muted/30">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
-          <CardTitle>Template Pencarian</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <Suspense fallback={<TemplateFallback />}>
-          <TemplateSection initialData={templates} />
-        </Suspense>
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-bold tracking-tight">Template Pencarian</h1>
+        <p className="text-muted-foreground">Kelola dan gunakan template untuk mempercepat pencarian Anda.</p>
+      </div>
+      <Suspense fallback={<TemplateFallback />}>
+        <TemplateSection initialData={templates} />
+      </Suspense>
+    </div>
   );
 }

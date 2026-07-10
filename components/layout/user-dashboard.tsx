@@ -4,93 +4,36 @@ import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  FileSearch,
   History,
   Sparkles,
   BarChart3,
-  ArrowRight,
-  Clock,
+  Search,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import type { AuthUser } from "@/lib/auth-helpers";
 import type { RiwayatItem } from "@/types";
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
-};
-
 const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" as const } },
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const shortcuts = [
   {
-    title: "Pencarian",
-    description: "Cari dokumen dengan TF-IDF",
-    url: "/pencarian",
-    icon: FileSearch,
-  },
-  {
     title: "Riwayat",
-    description: "Lihat riwayat pencarian",
     url: "/riwayat",
     icon: History,
   },
   {
     title: "Template",
-    description: "Simpan pola pencarian untuk digunakan kembali",
     url: "/template",
     icon: Sparkles,
   },
   {
     title: "Laporan",
-    description: "Statistik dan laporan pencarian",
     url: "/laporan",
     icon: BarChart3,
   },
 ];
-
-function ShortcutCard({
-  shortcut,
-}: {
-  shortcut: (typeof shortcuts)[number];
-}) {
-  const Icon = shortcut.icon;
-  return (
-    <motion.div variants={fadeUp}>
-      <Card className="group transition-colors hover:border-primary/30">
-        <CardContent className="p-5">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3 min-w-0">
-              <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
-                <Icon className="h-4 w-4" />
-              </div>
-              <div className="min-w-0">
-                <h3 className="font-semibold text-sm">{shortcut.title}</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  {shortcut.description}
-                </p>
-              </div>
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="shrink-0 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
-              asChild
-            >
-              <Link href={shortcut.url}>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    </motion.div>
-  );
-}
 
 export function UserDashboard({
   user,
@@ -100,67 +43,85 @@ export function UserDashboard({
   riwayat: RiwayatItem[];
 }) {
   return (
-    <div className="space-y-8">
-      <div>
-        <h2 className="text-base font-semibold">
-          Selamat datang, {user.name}
-        </h2>
-        <p className="text-sm text-muted-foreground mt-1">
-          Gunakan fitur di bawah untuk mencari dan mengelola dokumen.
+    <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.05 } } }} className="pb-12">
+      
+      {/* Hero Search Section - Distilled */}
+      <motion.div variants={fadeUp} className="mb-16">
+        <h2 className="text-4xl font-medium tracking-tight mb-4">Pencarian Dokumen</h2>
+        <p className="text-lg text-muted-foreground font-light max-w-xl leading-relaxed mb-8">
+          Temukan surat, dokumen, dan riwayat BMN dengan cepat menggunakan algoritma pencarian presisi.
         </p>
-      </div>
-
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="grid gap-3 sm:grid-cols-2"
-      >
-        {shortcuts.map((s) => (
-          <ShortcutCard key={s.url} shortcut={s} />
-        ))}
+        
+        <Link href="/pencarian" className="group block max-w-2xl">
+          <div className="flex items-center gap-3 w-full rounded-full border border-border bg-background px-6 py-4 transition-all hover:border-primary/50 hover:shadow-sm">
+            <Search className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            <span className="text-muted-foreground text-base font-light">Ketik kata kunci dokumen...</span>
+          </div>
+        </Link>
       </motion.div>
 
-      {riwayat.length > 0 && (
-        <div>
-          <h2 className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wider">
-            Riwayat Terbaru
-          </h2>
-          <div className="space-y-2">
-            {riwayat.slice(0, 3).map((r) => (
-              <Link
-                key={r.id}
-                href={`/riwayat/${r.id}`}
-                className="flex items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50"
-              >
-                <Clock className="h-4 w-4 shrink-0 text-muted-foreground" />
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium truncate">{r.query}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {r.resultCount} hasil &middot;{" "}
-                    {r.createdAt.toLocaleDateString("id-ID", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+        {/* Quick Links */}
+        <motion.div variants={fadeUp} className="md:col-span-4 space-y-6">
+          <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-widest">Pintasan</h3>
+          <div className="flex flex-col gap-1">
+            {shortcuts.map((s) => (
+              <Link key={s.url} href={s.url} className="group flex items-center gap-4 px-3 py-3 rounded-lg -ml-3 transition-colors hover:bg-muted/50">
+                <div className="text-muted-foreground transition-colors group-hover:text-foreground">
+                  <s.icon className="h-4 w-4" />
                 </div>
-                <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+                  {s.title}
+                </span>
               </Link>
             ))}
           </div>
-        </div>
-      )}
+        </motion.div>
 
-      {riwayat.length === 0 && (
-        <div className="flex flex-col items-center gap-3 text-center py-6">
-          <History className="h-10 w-10 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Belum Ada Riwayat</h2>
-          <p className="text-sm text-muted-foreground max-w-md">
-            Mulai cari dokumen untuk melihat riwayat pencarian di sini.
-          </p>
-        </div>
-      )}
-    </div>
+        {/* History */}
+        <motion.div variants={fadeUp} className="md:col-span-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-widest">Aktivitas Terakhir</h3>
+            {riwayat.length > 0 && (
+              <Link href="/riwayat" className="text-xs font-medium text-primary hover:underline">
+                Lihat Semua
+              </Link>
+            )}
+          </div>
+          
+          {riwayat.length > 0 ? (
+            <div className="flex flex-col border-t border-border/40">
+              {riwayat.slice(0, 5).map((r) => (
+                <Link
+                  key={r.id}
+                  href={`/riwayat/${r.id}`}
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6 border-b border-border/40 py-4 transition-colors hover:bg-muted/30 px-2 -mx-2 rounded-sm"
+                >
+                  <div className="flex items-center gap-4 min-w-0">
+                    <History className="h-4 w-4 shrink-0 text-muted-foreground/40 group-hover:text-primary transition-colors" />
+                    <p className="text-sm font-medium truncate text-foreground/80 group-hover:text-foreground transition-colors">{r.query}</p>
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground shrink-0">
+                    <span>{r.resultCount} hasil</span>
+                    <span className="w-1 h-1 rounded-full bg-border" />
+                    <span>
+                      {r.createdAt.toLocaleDateString("id-ID", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric"
+                      })}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="border-t border-border/40 pt-8 pb-4">
+              <p className="text-sm text-muted-foreground font-light">Belum ada riwayat pencarian.</p>
+            </div>
+          )}
+        </motion.div>
+      </div>
+    </motion.div>
   );
 }

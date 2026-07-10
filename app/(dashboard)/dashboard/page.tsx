@@ -1,13 +1,12 @@
 import { Suspense } from "react";
-import { LayoutDashboard, Loader2 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 import { requireSession } from "@/lib/auth-helpers";
 import { getRiwayatList } from "@/lib/data/riwayat";
 import { UserDashboard } from "@/components/layout/user-dashboard";
 
 function DashboardFallback() {
   return (
-    <div className="flex items-center gap-2 text-sm text-muted-foreground py-8">
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-12">
       <Loader2 className="h-4 w-4 animate-spin" />
       <span>Memuat beranda...</span>
     </div>
@@ -23,35 +22,27 @@ export default async function DashboardIndexPage() {
     const stats = await getDashboardStats();
 
     return (
-      <Card className="border-2">
-        <CardHeader className="border-b bg-muted/30">
-          <div className="flex items-center gap-2">
-            <LayoutDashboard className="h-5 w-5 text-primary" />
-            <CardTitle>Beranda</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-6">
-          <AdminDashboard stats={stats} />
-        </CardContent>
-      </Card>
+      <div className="max-w-5xl mx-auto w-full">
+        <header className="mb-10">
+          <p className="text-sm font-medium text-muted-foreground mb-2">Ringkasan Sistem</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Beranda Admin</h1>
+        </header>
+        <AdminDashboard stats={stats} />
+      </div>
     );
   }
 
   const riwayat = await getRiwayatList(user.id);
 
   return (
-    <Card className="border-2">
-      <CardHeader className="border-b bg-muted/30">
-        <div className="flex items-center gap-2">
-          <LayoutDashboard className="h-5 w-5 text-primary" />
-          <CardTitle>Beranda</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <Suspense fallback={<DashboardFallback />}>
-          <UserDashboard user={user} riwayat={riwayat} />
-        </Suspense>
-      </CardContent>
-    </Card>
+    <div className="max-w-5xl mx-auto w-full">
+      <header className="mb-10">
+        <p className="text-sm font-medium text-muted-foreground mb-2">Sistem Manajemen BMN</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Selamat datang, {user.name.split(" ")[0]}.</h1>
+      </header>
+      <Suspense fallback={<DashboardFallback />}>
+        <UserDashboard user={user} riwayat={riwayat} />
+      </Suspense>
+    </div>
   );
 }

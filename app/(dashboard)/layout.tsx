@@ -28,7 +28,7 @@ async function DashboardShell({
       <AppSidebar user={user} />
       <SidebarInset>
         <Header user={user} />
-        <div className="flex min-w-0 grow flex-col px-6 py-8">{children}</div>
+        <div className="flex min-w-0 grow flex-col px-4 py-6 md:px-8 md:py-8">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );
@@ -50,7 +50,7 @@ export function DashboardSkeleton() {
           <Skeleton className="h-6 w-32" />
           <Skeleton className="h-8 w-24" />
         </div>
-        <div className="flex-1 px-6 py-8">
+        <div className="flex-1 px-4 py-6 md:px-8 md:py-8">
           <Skeleton className="h-8 w-48" />
           <Skeleton className="mt-4 h-64 w-full" />
         </div>

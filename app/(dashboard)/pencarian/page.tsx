@@ -1,4 +1,3 @@
-import { Search } from "lucide-react";
 import { SearchBar } from "@/components/pencarian/search-bar";
 
 export default async function PencarianPage(props: {
@@ -8,18 +7,15 @@ export default async function PencarianPage(props: {
   const initialQuery = searchParams?.q ?? "";
 
   return (
-    <div className="flex flex-col items-center pt-12 md:pt-20">
-      <div className="flex flex-col items-center gap-2 mb-8">
-        <div className="rounded-full bg-primary/10 p-4 text-primary">
-          <Search className="h-8 w-8 md:h-10 md:w-10" />
-        </div>
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight">
-          Pencarian Dokumen
+    <div className="max-w-4xl mx-auto w-full pt-10 md:pt-16">
+      <header className="mb-12">
+        <h1 className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-3">
+          Eksplorasi Arsip
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Cari dokumen, surat, dan arsip dengan kata kunci
-        </p>
-      </div>
+        <h2 className="text-3xl md:text-5xl font-light tracking-tight text-foreground">
+          Pencarian Dokumen
+        </h2>
+      </header>
       <div className="w-full">
         <SearchBar initialQuery={initialQuery} />
       </div>

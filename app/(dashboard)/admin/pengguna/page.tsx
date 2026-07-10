@@ -1,6 +1,5 @@
 import { Suspense } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { getUserList } from "@/lib/data/pengguna";
 import { PenggunaSection } from "@/components/pengguna/pengguna-section";
 
@@ -15,19 +14,15 @@ function PenggunaFallback() {
 
 export default async function PenggunaPage() {
   return (
-    <Card className="border-2">
-      <CardHeader className="border-b bg-muted/30">
-        <div className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-primary" />
-          <CardTitle>Kelola Pengguna</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <Suspense fallback={<PenggunaFallback />}>
-          <PenggunaLoader />
-        </Suspense>
-      </CardContent>
-    </Card>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-1.5">
+        <h1 className="text-2xl font-bold tracking-tight">Kelola Pengguna</h1>
+        <p className="text-muted-foreground">Kelola hak akses, status, dan data akun pengguna.</p>
+      </div>
+      <Suspense fallback={<PenggunaFallback />}>
+        <PenggunaLoader />
+      </Suspense>
+    </div>
   );
 }
 

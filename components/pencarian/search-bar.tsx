@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Search, Loader2, X } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { SearchResults } from "@/components/pencarian/search-results";
 import { EmptySearch } from "@/components/pencarian/empty-search";
 import type { SearchResultItem } from "@/types";
@@ -18,7 +18,6 @@ export function SearchBar({
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(!!initialQuery);
   const [error, setError] = useState<string | null>(null);
-  const [focused, setFocused] = useState(false);
 
   const abortRef = useRef<AbortController>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,49 +80,39 @@ export function SearchBar({
   }
 
   return (
-    <div className="space-y-6">
-      <div
-        className={`flex items-center gap-3 rounded-full border bg-background px-5 transition-all duration-200 ${
-          focused
-            ? "shadow-lg border-primary/30 scale-[1.01]"
-            : "shadow-sm border-border hover:shadow-md"
-        }`}
-      >
-        {loading ? (
-          <Loader2 className="h-5 w-5 shrink-0 animate-spin text-muted-foreground" />
-        ) : (
-          <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
-        )}
+    <div className="space-y-12">
+      <div className="relative group">
         <input
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          placeholder="Ketik kata kunci pencarian..."
-          className="flex-1 bg-transparent py-3.5 text-base outline-none placeholder:text-muted-foreground/60"
+          placeholder="Ketik kata kunci..."
+          className="w-full bg-transparent border-0 border-b-2 border-border/40 pb-4 text-3xl md:text-5xl font-light outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary focus:ring-0 px-0"
           autoFocus
         />
-        {query.length > 0 && !loading && (
-          <button
-            onClick={handleClear}
-            className="shrink-0 rounded-full p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mt-2 flex items-center gap-2">
+          {loading && <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />}
+          {query.length > 0 && !loading && (
+            <button
+              onClick={handleClear}
+              className="p-2 text-muted-foreground/40 hover:text-foreground transition-colors"
+            >
+              <X className="h-6 w-6 md:h-8 md:w-8" />
+            </button>
+          )}
+        </div>
       </div>
 
       {error && (
-        <p className="text-sm text-destructive text-center" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       )}
 
       {hasSearched && results.length > 0 && (
-        <div className="pt-2">
-          <p className="text-sm text-muted-foreground mb-3">
-            Menampilkan {results.length} dokumen untuk &ldquo;{query}&rdquo;
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-6">
+            Menampilkan {results.length} Hasil Untuk &ldquo;{query}&rdquo;
           </p>
           <SearchResults results={results} />
         </div>
