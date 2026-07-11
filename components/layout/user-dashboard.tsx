@@ -46,21 +46,21 @@ export function UserDashboard({
     <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.05 } } }} className="pb-12">
       
       {/* Hero Search Section - Distilled */}
-      <motion.div variants={fadeUp} className="mb-16">
-        <h2 className="text-4xl font-medium tracking-tight mb-4">Pencarian Dokumen</h2>
-        <p className="text-lg text-muted-foreground font-light max-w-xl leading-relaxed mb-8">
+      <motion.div variants={fadeUp} className="mb-12 sm:mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight mb-3 sm:mb-4">Pencarian Dokumen</h2>
+        <p className="text-sm sm:text-base md:text-lg text-muted-foreground font-light max-w-xl leading-relaxed mb-6 sm:mb-8">
           Temukan surat, dokumen, dan riwayat BMN dengan cepat menggunakan algoritma pencarian presisi.
         </p>
         
         <Link href="/pencarian" className="group block max-w-2xl">
-          <div className="flex items-center gap-3 w-full rounded-full border border-border bg-background px-6 py-4 transition-all hover:border-primary/50 hover:shadow-sm">
-            <Search className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-            <span className="text-muted-foreground text-base font-light">Ketik kata kunci dokumen...</span>
+          <div className="flex items-center gap-3 w-full rounded-full border border-border bg-background px-4 sm:px-6 py-3 sm:py-4 transition-all hover:border-primary/50 hover:shadow-sm">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+            <span className="text-muted-foreground text-sm sm:text-base font-light truncate">Ketik kata kunci dokumen...</span>
           </div>
         </Link>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12">
         {/* Quick Links */}
         <motion.div variants={fadeUp} className="md:col-span-4 space-y-6">
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-widest">Pintasan</h3>

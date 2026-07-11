@@ -211,9 +211,9 @@ export function PenggunaTable({
         placeholder="Cari nama, username, atau email..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         onChange={(e) => table.getColumn("name")?.setFilterValue(e.target.value)}
-        className="max-w-sm"
+        className="w-full sm:max-w-sm"
       />
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (

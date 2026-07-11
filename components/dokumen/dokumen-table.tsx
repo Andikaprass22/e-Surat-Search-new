@@ -180,7 +180,7 @@ export function DokumenTable({
           onChange={(e) =>
             table.getColumn("judul")?.setFilterValue(e.target.value)
           }
-          className="max-w-sm"
+          className="w-full sm:max-w-sm"
         />
         <Select
           value={currentKategoriFilter}
@@ -190,7 +190,7 @@ export function DokumenTable({
               ?.setFilterValue(val === "all" ? undefined : val);
           }}
         >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px]">
             <SelectValue placeholder="Semua kategori" />
           </SelectTrigger>
           <SelectContent>
@@ -204,7 +204,7 @@ export function DokumenTable({
         </Select>
       </div>
 
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (

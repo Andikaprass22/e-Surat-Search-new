@@ -34,7 +34,7 @@ export default async function LaporanPage() {
             color="text-blue-600 bg-blue-500/10"
           />
 
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 md:grid-cols-2">
             <div>
               <h2 className="text-lg font-semibold mb-4 text-foreground">
                 Kata Kunci Tersering

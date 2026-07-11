@@ -45,51 +45,53 @@ export function SearchResultCard({ result }: { result: SearchResultItem }) {
         onClick={handleClick}
       >
         <CardContent className="p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-start gap-3 min-w-0">
-              <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary">
+          <div className="flex items-start justify-between gap-2 sm:gap-3">
+            <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
+              <div className="mt-0.5 rounded-lg bg-primary/10 p-2 text-primary shrink-0">
                 {loading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <FileText className="h-4 w-4" />
                 )}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-sm truncate">
                   {result.dokumen.judul}
                 </h3>
-                <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">
-                    <FileText className="h-3 w-3" />
+                    <FileText className="h-3 w-3 shrink-0" />
                     {result.dokumen.nomorSurat}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="h-3 w-3" />
+                  <span className="hidden sm:flex items-center gap-1">
+                    <Calendar className="h-3 w-3 shrink-0" />
                     {formatDate(result.dokumen.tanggal)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <FolderTree className="h-3 w-3" />
+                    <FolderTree className="h-3 w-3 shrink-0" />
                     {result.dokumen.kategori.nama}
                   </span>
                 </div>
               </div>
             </div>
-            <Badge variant="outline" className={`shrink-0 ${color}`}>
-              {pct}% relevan
-            </Badge>
-            {result.hasFilePath && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 shrink-0"
-                asChild
-                onClick={(e) => e.stopPropagation()}
-              >
-                <a href={`/api/dokumen/${result.dokumenId}/download`} title="Unduh file">
-                  <Download className="h-4 w-4" />
-                </a>
-              </Button>
-            )}
+            <div className="flex items-start gap-1 sm:gap-2 shrink-0">
+              <Badge variant="outline" className={`${color} text-[10px] sm:text-xs`}>
+                {pct}%
+              </Badge>
+              {result.hasFilePath && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-7 w-7 sm:h-8 sm:w-8 shrink-0"
+                  asChild
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <a href={`/api/dokumen/${result.dokumenId}/download`} title="Unduh file">
+                    <Download className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                  </a>
+                </Button>
+              )}
+            </div>
           </div>
           <div className="mt-3 h-1.5 w-full rounded-full bg-muted overflow-hidden">
             <motion.div

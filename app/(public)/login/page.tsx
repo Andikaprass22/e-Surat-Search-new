@@ -61,7 +61,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <div>
-            <h2 className="text-3xl font-light tracking-tight mb-2">Selamat Datang</h2>
+            <h2 className="text-2xl sm:text-3xl font-light tracking-tight mb-2">Selamat Datang</h2>
             <p className="text-muted-foreground text-sm font-light">
               Silakan masuk ke akun Anda untuk melanjutkan.
             </p>

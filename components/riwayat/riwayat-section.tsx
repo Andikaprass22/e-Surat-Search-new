@@ -123,23 +123,23 @@ function RiwayatItemRow({ item }: { item: RiwayatItem }) {
       <button
         onClick={handleClick}
         disabled={loading}
-        className="w-full group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-6 border-b border-border/40 py-5 transition-colors hover:bg-muted/30 px-3 -mx-3 rounded-sm text-left"
+        className="w-full group flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6 border-b border-border/40 py-4 sm:py-5 transition-colors hover:bg-muted/30 px-2 sm:px-3 -mx-2 sm:-mx-3 rounded-sm text-left"
       >
-        <div className="flex items-center gap-5 min-w-0">
-          <div className="text-muted-foreground/30 transition-colors group-hover:text-primary">
+        <div className="flex items-center gap-3 sm:gap-5 min-w-0">
+          <div className="text-muted-foreground/30 transition-colors group-hover:text-primary shrink-0">
             {loading ? (
-              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin text-primary" />
             ) : (
-              <Search className="h-5 w-5" />
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
             )}
           </div>
           <div className="min-w-0">
-            <h3 className="font-medium text-base truncate text-foreground/80 transition-colors group-hover:text-foreground">
+            <h3 className="font-medium text-sm sm:text-base truncate text-foreground/80 transition-colors group-hover:text-foreground">
               {item.query}
             </h3>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground shrink-0 pl-10 sm:pl-0">
+        <div className="flex items-center gap-3 sm:gap-4 text-xs font-medium text-muted-foreground shrink-0 pl-10 sm:pl-0">
           <span>{item.resultCount} hasil</span>
           <span className="w-1 h-1 rounded-full bg-border" />
           <span>{formatDate(item.createdAt)}</span>

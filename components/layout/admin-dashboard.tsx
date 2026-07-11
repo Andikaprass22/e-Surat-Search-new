@@ -47,11 +47,11 @@ export function AdminDashboard({ stats }: { stats: DashboardStats }) {
       {/* Metrics - Distilled to pure typography */}
       <motion.div variants={fadeUp} className="mb-16">
         <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-widest mb-6">Metrik Utama</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 py-6 border-y border-border/40">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 py-6 border-y border-border/40">
           {statCards.map((s) => (
-            <div key={s.key} className="flex flex-col gap-2">
-              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{s.label}</span>
-              <span className="text-4xl md:text-5xl font-light tracking-tight text-foreground">
+            <div key={s.key} className="flex flex-col gap-1 sm:gap-2">
+              <span className="text-[10px] sm:text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{s.label}</span>
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light tracking-tight text-foreground">
                 {stats[s.key].toLocaleString("id-ID")}
               </span>
             </div>
@@ -59,7 +59,7 @@ export function AdminDashboard({ stats }: { stats: DashboardStats }) {
         </div>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-16">
+      <div className="grid md:grid-cols-2 gap-8 sm:gap-12 md:gap-16">
         {/* Admin Navigation */}
         <motion.div variants={fadeUp} className="space-y-6">
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-widest">Administrator</h3>

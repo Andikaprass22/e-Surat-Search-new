@@ -144,9 +144,9 @@ export function KategoriTable({
         onChange={(e) =>
           table.getColumn("name")?.setFilterValue(e.target.value)
         }
-        className="max-w-sm"
+        className="w-full sm:max-w-sm"
       />
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (

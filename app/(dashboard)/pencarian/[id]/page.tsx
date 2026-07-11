@@ -26,9 +26,9 @@ export default async function DokumenViewPage({
   return (
     <Card className="border-2">
       <CardHeader className="border-b bg-muted/30">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0 sm:justify-between">
           <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary" />
+            <FileText className="h-5 w-5 text-primary shrink-0" />
             <CardTitle>Detail Dokumen</CardTitle>
           </div>
           <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export default async function DokumenViewPage({
           <h1 className="text-2xl font-bold">{dokumen.judul}</h1>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <div className="flex items-center gap-2 text-sm">
             <Hash className="h-4 w-4 text-muted-foreground" />
             <span className="text-muted-foreground">Nomor Surat:</span>

@@ -80,24 +80,24 @@ export function SearchBar({
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8 sm:space-y-12">
       <div className="relative group">
         <input
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ketik kata kunci..."
-          className="w-full bg-transparent border-0 border-b-2 border-border/40 pb-4 text-3xl md:text-5xl font-light outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary focus:ring-0 px-0"
+          className="w-full bg-transparent border-0 border-b-2 border-border/40 pb-3 sm:pb-4 text-2xl sm:text-3xl md:text-5xl font-light outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary focus:ring-0 px-0"
           autoFocus
         />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mt-2 flex items-center gap-2">
-          {loading && <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />}
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mt-1 sm:-mt-2 flex items-center gap-2">
+          {loading && <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin text-muted-foreground" />}
           {query.length > 0 && !loading && (
             <button
               onClick={handleClear}
-              className="p-2 text-muted-foreground/40 hover:text-foreground transition-colors"
+              className="p-1.5 sm:p-2 text-muted-foreground/40 hover:text-foreground transition-colors"
             >
-              <X className="h-6 w-6 md:h-8 md:w-8" />
+              <X className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
             </button>
           )}
         </div>
