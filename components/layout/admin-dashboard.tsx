@@ -23,7 +23,7 @@ const statCards: {
   label: string;
 }[] = [
   { key: "totalDokumen", label: "Total Dokumen" },
-  { key: "totalKategori", label: "Kategori BMN" },
+  { key: "totalKategori", label: "Kategori" },
   { key: "totalPengguna", label: "Akun Terdaftar" },
   { key: "penggunaAktif", label: "Sesi Aktif" },
 ];
