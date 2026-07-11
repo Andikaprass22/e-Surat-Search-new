@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
+import { FileText, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 import {
   Table,
@@ -204,13 +204,13 @@ export function DokumenTable({
         </Select>
       </div>
 
-      <div className="overflow-x-auto rounded-md border">
+      <div className="overflow-x-auto rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
-              <TableRow key={hg.id}>
+              <TableRow key={hg.id} className="bg-muted/50">
                 {hg.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="text-[11px] font-semibold uppercase tracking-wider">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -227,14 +227,17 @@ export function DokumenTable({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-sm text-muted-foreground"
+                  className="h-40 text-center"
                 >
-                  Tidak ada dokumen ditemukan.
+                  <div className="flex flex-col items-center gap-2 text-sm text-muted-foreground">
+                    <FileText className="h-8 w-8 text-muted-foreground/30" />
+                    <span>Tidak ada dokumen ditemukan.</span>
+                  </div>
                 </TableCell>
               </TableRow>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+                <TableRow key={row.id} className="transition-colors hover:bg-muted/30">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -250,9 +253,9 @@ export function DokumenTable({
         </Table>
       </div>
 
-      <p className="text-xs text-muted-foreground">
-        Total {data.length} dokumen.
-      </p>
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <span>Total <span className="font-medium text-foreground">{data.length}</span> dokumen</span>
+      </div>
     </div>
   );
 }

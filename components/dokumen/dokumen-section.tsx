@@ -51,9 +51,12 @@ export function DokumenSection({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-muted-foreground">
+          {initialData.length} dokumen terdaftar
+        </p>
         <motion.div whileHover={{ y: -1 }} transition={{ duration: 0.15 }}>
-          <Button onClick={handleAdd}>
+          <Button onClick={handleAdd} className="h-9 text-xs gap-1.5">
             <Plus className="h-4 w-4" />
             Tambah Dokumen
           </Button>

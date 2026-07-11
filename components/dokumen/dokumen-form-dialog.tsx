@@ -167,24 +167,24 @@ export function DokumenFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto p-0 gap-0">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" as const }}
         >
-          <DialogHeader>
+          <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40">
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
 
           {isLoading ? (
-            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 px-6 py-12 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
               Memuat data dokumen...
             </div>
           ) : (
-            <form action={formAction} className="space-y-4 pt-2">
+            <form action={formAction} className="px-6 py-4 space-y-5">
               <div className="space-y-2">
                 <Label htmlFor="title">Judul Dokumen</Label>
                 <Input
@@ -263,27 +263,33 @@ export function DokumenFormDialog({
               </div>
 
               <div className="space-y-3">
-                <Label>Sumber Konten</Label>
-                <div className="flex gap-2">
-                  <Button
+                <Label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Sumber Konten</Label>
+                <div className="flex gap-1.5 p-1 rounded-lg bg-muted/50 w-fit">
+                  <button
                     type="button"
-                    variant={contentSource === "manual" ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setContentSource("manual")}
                     disabled={pending}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                      contentSource === "manual"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
                     Ketik Manual
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     type="button"
-                    variant={contentSource === "upload" ? "default" : "outline"}
-                    size="sm"
                     onClick={() => setContentSource("upload")}
                     disabled={pending}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                      contentSource === "upload"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
                   >
                     <Upload className="h-3.5 w-3.5" />
                     Unggah File
-                  </Button>
+                  </button>
                 </div>
 
                 {contentSource === "manual" ? (
@@ -362,7 +368,7 @@ export function DokumenFormDialog({
                 </Alert>
               )}
 
-              <DialogFooter>
+              <DialogFooter className="px-6 py-4 border-t border-border/40 -mx-6 -mb-0 mt-6">
                 <Button
                   type="button"
                   variant="outline"
