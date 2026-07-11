@@ -67,7 +67,7 @@ export function AppSidebar({ user }: { user: AuthUser }) {
     const active = isActive(pathname, item.url);
     return (
       <SidebarMenuItem key={item.url}>
-        <SidebarMenuButton asChild isActive={active} tooltip={item.title}>
+        <SidebarMenuButton asChild isActive={active} tooltip={item.title} className="h-9">
           <Link href={item.url} className="group flex items-center gap-2">
             <Icon className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
             <span className="truncate">{item.title}</span>
@@ -94,14 +94,14 @@ export function AppSidebar({ user }: { user: AuthUser }) {
         <SidebarGroup>
           <SidebarGroupLabel>Umum</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{publicItems.map(renderItem)}</SidebarMenu>
+            <SidebarMenu className="gap-1">{publicItems.map(renderItem)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
           <SidebarGroupLabel>Pengguna</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>{userItems.map(renderItem)}</SidebarMenu>
+            <SidebarMenu className="gap-1">{userItems.map(renderItem)}</SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -109,7 +109,7 @@ export function AppSidebar({ user }: { user: AuthUser }) {
           <SidebarGroup>
             <SidebarGroupLabel>Administrator</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>{adminOnlyItems.map(renderItem)}</SidebarMenu>
+              <SidebarMenu className="gap-1">{adminOnlyItems.map(renderItem)}</SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         ) : null}

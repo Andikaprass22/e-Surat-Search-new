@@ -78,7 +78,7 @@ export default function LoginPage() {
                   placeholder="admin"
                   autoComplete="username"
                   required
-                  className="border-0 border-b border-border/60 rounded-none px-0 py-2 h-auto focus-visible:ring-0 focus-visible:border-primary shadow-none bg-transparent text-base transition-colors"
+                  className="rounded-[10px] border-border/60 px-3 py-2 h-auto focus-visible:ring-0 shadow-none bg-transparent text-base transition-colors"
                 />
               </div>
               <div className="space-y-1.5">
@@ -89,7 +89,7 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   required
-                  className="border-0 border-b border-border/60 rounded-none px-0 py-2 h-auto focus-visible:ring-0 focus-visible:border-primary shadow-none bg-transparent text-base transition-colors"
+                  className="rounded-[10px] border-border/60 py-2 h-auto focus-visible:ring-0 shadow-none bg-transparent text-base transition-colors"
                 />
               </div>
             </div>

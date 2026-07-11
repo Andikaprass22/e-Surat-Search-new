@@ -24,7 +24,7 @@ export default async function RiwayatPage() {
         <h2 className="text-3xl font-semibold tracking-tight text-foreground">Riwayat Pencarian</h2>
       </header>
       <Suspense fallback={<RiwayatFallback />}>
-        <RiwayatSection data={riwayat} />
+        <RiwayatSection data={riwayat} isAdmin={user.role === "admin"} />
       </Suspense>
     </div>
   );

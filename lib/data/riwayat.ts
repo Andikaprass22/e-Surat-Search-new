@@ -6,6 +6,7 @@ import type { RiwayatItem, RiwayatDetail } from "@/types";
 export async function getRiwayatList(userId: string): Promise<RiwayatItem[]> {
   "use cache";
   cacheTag(CACHE_TAGS.RIWAYAT(userId));
+  cacheTag(CACHE_TAGS.RIWAYAT_ALL);
   console.log(`[getRiwayatList] Mengambil riwayat user: ${userId}`);
 
   const rows = await prisma.searchHistory.findMany({

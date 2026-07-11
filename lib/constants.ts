@@ -14,6 +14,7 @@ export const CACHE_TAGS = {
   KATEGORI: (id: string) => `kategori-${id}`,
   PENGGUNA: (id: string) => `pengguna-${id}`,
   RIWAYAT: (userId: string) => `riwayat-${userId}`,
+  RIWAYAT_ALL: "riwayat-all",
   RIWAYAT_DETAIL: (historyId: string) => `riwayat-detail-${historyId}`,
   LAPORAN: (userId: string) => `laporan-${userId}`,
   TEMPLATE_LIST: (userId: string) => `template-list-${userId}`,
