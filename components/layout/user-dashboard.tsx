@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   History,
-  Sparkles,
   BarChart3,
   Search,
 } from "lucide-react";
@@ -22,11 +21,6 @@ const shortcuts = [
     title: "Riwayat",
     url: "/riwayat",
     icon: History,
-  },
-  {
-    title: "Template",
-    url: "/template",
-    icon: Sparkles,
   },
   {
     title: "Laporan",

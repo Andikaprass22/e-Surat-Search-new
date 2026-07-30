@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   FileSearch,
   History,
-  Sparkles,
   BarChart3,
   FileText,
   FolderTree,
@@ -37,7 +36,6 @@ type NavItem = {
 const userItems: NavItem[] = [
   { title: "Pencarian", url: "/pencarian", icon: FileSearch },
   { title: "Riwayat", url: "/riwayat", icon: History },
-  { title: "Template", url: "/template", icon: Sparkles },
   { title: "Laporan", url: "/laporan", icon: BarChart3 },
 ];
 
