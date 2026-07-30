@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -77,15 +78,18 @@ export function AppSidebar({ user }: { user: AuthUser }) {
 
   return (
     <Sidebar>
-      <SidebarHeader className="border-b px-4 py-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[4px] bg-primary">
-            <div className="h-3.5 w-3.5 bg-background rounded-[2px]" />
-          </div>
-          <div className="flex flex-col min-w-0">
-            <span className="truncate text-[15px] font-semibold tracking-tight text-foreground uppercase">e-Surat</span>
-            <span className="truncate text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Sistem Arsip</span>
-          </div>
+      <SidebarHeader className="border-b px-4 py-4 flex items-center gap-3">
+        <Image
+          src="/logo.png"
+          alt="Logo"
+          width={42}
+          height={42}
+          className="object-contain shrink-0"
+          priority
+        />
+        <div className="flex flex-col min-w-0">
+          <span className="truncate text-[15px] font-semibold tracking-tight text-foreground uppercase">e-Surat</span>
+          <span className="truncate text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Sistem Arsip</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
