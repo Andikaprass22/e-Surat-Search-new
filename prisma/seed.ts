@@ -18,19 +18,37 @@ async function main() {
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    console.log("Admin user already exists, skipping seed.");
+    if (existing.role !== "admin") {
+      await prisma.user.update({
+        where: { id: existing.id },
+        data: {
+          role: "admin",
+          banned: false,
+          username: process.env.ADMIN_USERNAME ?? "admin",
+        },
+      });
+      console.log(`Existing user promoted to admin: ${existing.email}`);
+    } else {
+      console.log("Admin user already exists, skipping seed.");
+    }
     return;
   }
 
-  const passwordHash = await auth.api.signUpEmail({
+  const created = await auth.api.signUpEmail({
     body: {
       email,
       password,
       name: "Admin",
+      username: process.env.ADMIN_USERNAME ?? "admin",
     },
   });
 
-  console.log(`Admin user created: ${passwordHash.user.email}`);
+  await prisma.user.update({
+    where: { id: created.user.id },
+    data: { role: "admin", banned: false },
+  });
+
+  console.log(`Admin user created: ${created.user.email}`);
 }
 
 main()

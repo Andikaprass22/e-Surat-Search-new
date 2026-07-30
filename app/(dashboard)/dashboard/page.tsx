@@ -1,65 +1,48 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ImageUpload } from "@/components/upload/ImageUpload";
-import { FileUpload } from "@/components/upload/FileUpload";
-import { CloudUpload, LayoutDashboard } from "lucide-react";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+import { requireSession } from "@/lib/auth-helpers";
+import { getRiwayatList } from "@/lib/data/riwayat";
+import { UserDashboard } from "@/components/layout/user-dashboard";
 
-export default function DashboardPage() {
+function DashboardFallback() {
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-            <LayoutDashboard className="h-5 w-5 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Welcome to Dashboard
-          </h1>
-        </div>
-        <div className="rounded-md bg-muted/50 p-3 border border-border/50 w-fit mt-2">
-          <p className="text-sm text-muted-foreground flex flex-wrap items-center gap-2">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-background border text-xs font-medium">
-              i
-            </span>
-            Edit{" "}
-            <code className="rounded bg-background border px-1.5 py-0.5 text-xs font-mono text-foreground">
-              app/(dashboard)/dashboard/page.tsx
-            </code>{" "}
-            to customize this page.
-          </p>
-        </div>
-      </div>
+    <div className="flex items-center gap-2 text-sm text-muted-foreground py-12">
+      <Loader2 className="h-4 w-4 animate-spin" />
+      <span>Memuat beranda...</span>
+    </div>
+  );
+}
 
-      <Card className="border-2 shadow-sm overflow-hidden">
-        <CardHeader className="pb-4 bg-muted/30 border-b">
-          <div className="flex items-center gap-2 mb-1">
-            <CloudUpload className="h-5 w-5 text-primary" />
-            <CardTitle className="text-xl">Test Upload</CardTitle>
-          </div>
-          <CardDescription>
-            Upload images and files to test UploadThing integration
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid gap-8 md:grid-cols-2">
-            <div className="space-y-4">
-              <div className="rounded-lg border bg-card p-4 shadow-sm">
-                <ImageUpload />
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="rounded-lg border bg-card p-4 shadow-sm">
-                <FileUpload />
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+export default async function DashboardIndexPage() {
+  const user = await requireSession();
+
+  if (user.role === "admin") {
+    const { AdminDashboard } = await import("@/components/layout/admin-dashboard");
+    const { getDashboardStats } = await import("@/lib/data/dashboard");
+    const stats = await getDashboardStats();
+
+    return (
+      <div className="max-w-5xl mx-auto w-full">
+        <header className="mb-10">
+          <p className="text-sm font-medium text-muted-foreground mb-2">Ringkasan Sistem</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Beranda Admin</h1>
+        </header>
+        <AdminDashboard stats={stats} />
+      </div>
+    );
+  }
+
+  const riwayat = await getRiwayatList(user.id);
+
+  return (
+    <div className="max-w-5xl mx-auto w-full">
+      <header className="mb-10">
+        <p className="text-sm font-medium text-muted-foreground mb-2">Sistem Manajemen BMN</p>
+        <h1 className="text-3xl font-semibold tracking-tight">Selamat datang, {user.name.split(" ")[0]}.</h1>
+      </header>
+      <Suspense fallback={<DashboardFallback />}>
+        <UserDashboard user={user} riwayat={riwayat} />
+      </Suspense>
     </div>
   );
 }
