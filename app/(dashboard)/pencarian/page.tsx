@@ -7,14 +7,15 @@ export default async function PencarianPage(props: {
   const initialQuery = searchParams?.q ?? "";
 
   return (
-    <div className="max-w-4xl mx-auto w-full pt-10 md:pt-16">
-      <header className="mb-12">
-        <h1 className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-3">
-          Eksplorasi Arsip
+    <div className="max-w-3xl mx-auto w-full pt-8 md:pt-12">
+      <header className="mb-10">
+        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground mb-2">
+          Pencarian Arsip Surat
         </h1>
-        <h2 className="text-3xl md:text-5xl font-light tracking-tight text-foreground">
-          Pencarian Dokumen
-        </h2>
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+          Cari surat dan dokumen berdasarkan kata kunci. Hasil diurutkan
+          menurut tingkat relevansi dengan metode TF-IDF.
+        </p>
       </header>
       <div className="w-full">
         <SearchBar initialQuery={initialQuery} />

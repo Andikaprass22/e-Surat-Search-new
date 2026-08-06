@@ -2,18 +2,18 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { History, Loader2, Search, Trash2 } from "lucide-react";
 import type { RiwayatItem } from "@/types";
 import { deleteAllRiwayatAction } from "@/app/(dashboard)/riwayat/actions";
 import { useActionState } from "react";
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.05 } },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 10 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
 };

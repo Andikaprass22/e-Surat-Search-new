@@ -102,14 +102,26 @@ model Document {
   category       Category       @relation(fields: [categoryId], references: [id])
   createdById    String
   updatedById    String?
+  // ---- Atribut kearsipan (revisi dosen) ----
+  jenis          String?
+  pengirim       String?
+  penerima       String?
+  perihal        String?
+  disposisi      String?
+  lokasiArsip    String?
+  statusArsip    String?
+  tanggalTerima  DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   terms          DocumentTerm[]
   searchResults  SearchResult[]
+  logs           DocumentLog[]
 
   @@index([categoryId])
   @@index([documentNumber])
   @@index([documentDate])
+  @@index([jenis])
+  @@index([statusArsip])
   @@map("documents")
 }
 
@@ -185,4 +197,18 @@ model LoginAttempt {
   @@unique([identifier])
   @@index([identifier])
   @@map("login_attempts")
+}
+
+model DocumentLog {
+  id         String   @id @default(cuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  userId     String
+  aksi       String
+  keterangan String?
+  createdAt  DateTime @default(now())
+
+  @@index([documentId])
+  @@index([userId])
+  @@map("document_logs")
 }

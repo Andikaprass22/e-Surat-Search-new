@@ -8,7 +8,9 @@ import {
   FileSearch,
   History,
   BarChart3,
-  FileText,
+  Archive,
+  MailOpen,
+  Send,
   FolderTree,
   Users,
   ShieldCheck,
@@ -43,7 +45,12 @@ const userItems: NavItem[] = [
 const adminOnlyItems: NavItem[] = [
   { title: "Kelola Pengguna", url: "/admin/pengguna", icon: Users },
   { title: "Kelola Kategori", url: "/admin/kategori", icon: FolderTree },
-  { title: "Semua Dokumen", url: "/admin/dokumen", icon: FileText },
+  { title: "Kelola Arsip Surat", url: "/admin/dokumen", icon: Archive },
+];
+
+const arsipItems: NavItem[] = [
+  { title: "Surat Masuk", url: "/admin/dokumen?jenis=masuk", icon: MailOpen },
+  { title: "Surat Keluar", url: "/admin/dokumen?jenis=keluar", icon: Send },
 ];
 
 const publicItems: NavItem[] = [
@@ -108,12 +115,20 @@ export function AppSidebar({ user }: { user: AuthUser }) {
         </SidebarGroup>
 
         {isAdmin ? (
-          <SidebarGroup>
-            <SidebarGroupLabel>Administrator</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu className="gap-1">{adminOnlyItems.map(renderItem)}</SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <>
+            <SidebarGroup>
+              <SidebarGroupLabel>Administrator</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu className="gap-1">{adminOnlyItems.map(renderItem)}</SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+            <SidebarGroup>
+              <SidebarGroupLabel>Arsip Surat</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu className="gap-1">{arsipItems.map(renderItem)}</SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
         ) : null}
       </SidebarContent>
       <SidebarFooter className="border-t p-4">

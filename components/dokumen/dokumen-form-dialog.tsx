@@ -44,6 +44,14 @@ type EditData = {
   content: string;
   documentDate: string;
   categoryId: string;
+  jenis: string | null;
+  pengirim: string | null;
+  penerima: string | null;
+  perihal: string | null;
+  disposisi: string | null;
+  lokasiArsip: string | null;
+  statusArsip: string | null;
+  tanggalTerima: string | null;
 };
 
 type ContentSource = "manual" | "upload";
@@ -94,6 +102,14 @@ export function DokumenFormDialog({
   const [autoNumber, setAutoNumber] = React.useState(false);
   const [loadingNumber, setLoadingNumber] = React.useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = React.useState("");
+  const [jenis, setJenis] = React.useState<string>("");
+  const [pengirim, setPengirim] = React.useState("");
+  const [penerima, setPenerima] = React.useState("");
+  const [perihal, setPerihal] = React.useState("");
+  const [disposisi, setDisposisi] = React.useState("");
+  const [lokasiArsip, setLokasiArsip] = React.useState("");
+  const [statusArsip, setStatusArsip] = React.useState("");
+  const [tanggalTerima, setTanggalTerima] = React.useState("");
 
   React.useEffect(() => {
     if (open && isEdit && mode?.kind === "edit") {
@@ -103,6 +119,14 @@ export function DokumenFormDialog({
         if (result.ok && result.dokumen) {
           setEditData(result.dokumen);
           setManualContent(result.dokumen.content);
+          setJenis(result.dokumen.jenis ?? "");
+          setPengirim(result.dokumen.pengirim ?? "");
+          setPenerima(result.dokumen.penerima ?? "");
+          setPerihal(result.dokumen.perihal ?? "");
+          setDisposisi(result.dokumen.disposisi ?? "");
+          setLokasiArsip(result.dokumen.lokasiArsip ?? "");
+          setStatusArsip(result.dokumen.statusArsip ?? "");
+          setTanggalTerima(result.dokumen.tanggalTerima ?? "");
         }
         setLoadingDetail(false);
       });
@@ -113,6 +137,14 @@ export function DokumenFormDialog({
       setDocumentNumber("");
       setAutoNumber(false);
       setSelectedCategoryId("");
+      setJenis("");
+      setPengirim("");
+      setPenerima("");
+      setPerihal("");
+      setDisposisi("");
+      setLokasiArsip("");
+      setStatusArsip("");
+      setTanggalTerima("");
     }
     if (open) {
       setContentSource("manual");
@@ -167,13 +199,14 @@ export function DokumenFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto p-0 gap-0">
+      <DialogContent className="sm:max-w-lg max-w-full max-h-[85vh] overflow-hidden p-0 gap-0 flex flex-col">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" as const }}
+          className="flex flex-1 flex-col min-h-0"
         >
-          <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b border-border/40 shrink-0">
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
@@ -184,7 +217,11 @@ export function DokumenFormDialog({
               Memuat data dokumen...
             </div>
           ) : (
-            <form action={formAction} className="px-6 py-4 space-y-5">
+            <form
+              id="dokumen-form"
+              action={formAction}
+              className="px-6 py-4 space-y-5 overflow-y-auto min-h-0 flex-1 overscroll-contain"
+            >
               <div className="space-y-2">
                 <Label htmlFor="title">Judul Dokumen</Label>
                 <Input
@@ -262,6 +299,126 @@ export function DokumenFormDialog({
                 </Select>
               </div>
 
+              <div className="rounded-lg border border-border/60 bg-muted/30 p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Informasi Kearsipan
+                  </p>
+                  <span className="text-[10px] text-muted-foreground">opsional</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="jenis">Jenis Surat</Label>
+                    <Select
+                      name="jenis"
+                      value={jenis}
+                      onValueChange={setJenis}
+                      disabled={pending}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Pilih jenis (opsional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="SURAT_MASUK">Surat Masuk</SelectItem>
+                        <SelectItem value="SURAT_KELUAR">Surat Keluar</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="statusArsip">Status Arsip</Label>
+                    <Select
+                      name="statusArsip"
+                      value={statusArsip}
+                      onValueChange={setStatusArsip}
+                      disabled={pending}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Pilih status (opsional)" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="AKTIF">Aktif</SelectItem>
+                        <SelectItem value="RETENSI">Retensi</SelectItem>
+                        <SelectItem value="DIMUSNAHKAN">Dimusnahkan</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="pengirim">Pengirim</Label>
+                    <Input
+                      id="pengirim"
+                      name="pengirim"
+                      value={pengirim}
+                      onChange={(e) => setPengirim(e.target.value)}
+                      placeholder="Instansi/pengirim surat (opsional)"
+                      disabled={pending}
+                    />
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="penerima">Penerima</Label>
+                    <Input
+                      id="penerima"
+                      name="penerima"
+                      value={penerima}
+                      onChange={(e) => setPenerima(e.target.value)}
+                      placeholder="Penerima surat (opsional)"
+                      disabled={pending}
+                    />
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="perihal">Perihal</Label>
+                    <Input
+                      id="perihal"
+                      name="perihal"
+                      value={perihal}
+                      onChange={(e) => setPerihal(e.target.value)}
+                      placeholder="Perihal surat (opsional)"
+                      disabled={pending}
+                    />
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="disposisi">Disposisi</Label>
+                    <Input
+                      id="disposisi"
+                      name="disposisi"
+                      value={disposisi}
+                      onChange={(e) => setDisposisi(e.target.value)}
+                      placeholder="Tujuan disposisi (opsional)"
+                      disabled={pending}
+                    />
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="lokasiArsip">Lokasi Arsip</Label>
+                    <Input
+                      id="lokasiArsip"
+                      name="lokasiArsip"
+                      value={lokasiArsip}
+                      onChange={(e) => setLokasiArsip(e.target.value)}
+                      placeholder="Contoh: Lemari A Rak 3 (opsional)"
+                      disabled={pending}
+                    />
+                  </div>
+
+                  <div className="space-y-2 min-w-0">
+                    <Label htmlFor="tanggalTerima">Tanggal Terima</Label>
+                    <Input
+                      id="tanggalTerima"
+                      name="tanggalTerima"
+                      type="date"
+                      value={tanggalTerima}
+                      onChange={(e) => setTanggalTerima(e.target.value)}
+                      disabled={pending}
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="space-y-3">
                 <Label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Sumber Konten</Label>
                 <div className="flex gap-1.5 p-1 rounded-lg bg-muted/50 w-fit">
@@ -322,7 +479,7 @@ export function DokumenFormDialog({
                           className="flex-1"
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground break-words">
                         Maksimal 10 MB. Format: PDF, DOCX, DOC. Teks akan diekstrak otomatis.
                       </p>
                     </div>
@@ -367,27 +524,27 @@ export function DokumenFormDialog({
                   <AlertDescription>{state.error}</AlertDescription>
                 </Alert>
               )}
-
-              <DialogFooter className="px-6 py-4 border-t border-border/40 -mx-6 -mb-0 mt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => onOpenChange(false)}
-                  disabled={pending}
-                >
-                  Batal
-                </Button>
-                <Button type="submit" disabled={pending}>
-                  {pending && <Loader2 className="h-4 w-4 animate-spin" />}
-                  {pending
-                    ? "Menyimpan..."
-                    : isEdit
-                      ? "Simpan perubahan"
-                      : "Tambah dokumen"}
-                </Button>
-              </DialogFooter>
             </form>
           )}
+
+          <DialogFooter className="mx-0 mb-0 px-6 py-4 border-t border-border/40 shrink-0">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={pending}
+            >
+              Batal
+            </Button>
+            <Button type="submit" form="dokumen-form" disabled={pending}>
+              {pending && <Loader2 className="h-4 w-4 animate-spin" />}
+              {pending
+                ? "Menyimpan..."
+                : isEdit
+                  ? "Simpan perubahan"
+                  : "Tambah dokumen"}
+            </Button>
+          </DialogFooter>
         </motion.div>
       </DialogContent>
     </Dialog>

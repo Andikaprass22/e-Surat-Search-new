@@ -5,6 +5,7 @@ import { getLaporanRingkasan } from "@/lib/data/laporan";
 import { LaporanStatsCard } from "@/components/laporan/laporan-stats-card";
 import { KeywordTrendList } from "@/components/laporan/keyword-trend-list";
 import { TrendHarianList } from "@/components/laporan/trend-harian-list";
+import { RekapArsipSection } from "@/components/laporan/rekap-arsip-section";
 
 function LaporanFallback() {
   return (
@@ -23,10 +24,12 @@ export default async function LaporanPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-1.5">
         <h1 className="text-2xl font-bold tracking-tight">Laporan dan Statistik</h1>
-        <p className="text-muted-foreground">Ringkasan aktivitas pencarian dan tren kata kunci Anda.</p>
+        <p className="text-muted-foreground">Ringkasan aktivitas pencarian, tren kata kunci, dan rekap arsip surat.</p>
       </div>
       <Suspense fallback={<LaporanFallback />}>
         <div className="space-y-8">
+          {user.role === "admin" && <RekapArsipSection />}
+
           <LaporanStatsCard
             value={laporan.totalPencarian}
             label="Total Pencarian"

@@ -50,8 +50,13 @@ export default async function DokumenViewPage({
         </div>
       </CardHeader>
       <CardContent className="pt-6 space-y-6">
-        <div>
+        <div className="flex flex-wrap items-center gap-2">
           <h1 className="text-2xl font-bold">{dokumen.judul}</h1>
+          {dokumen.arsip?.jenis === "SURAT_MASUK" ? (
+            <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600">Surat Masuk</Badge>
+          ) : dokumen.arsip?.jenis === "SURAT_KELUAR" ? (
+            <Badge variant="default" className="bg-sky-600 hover:bg-sky-600">Surat Keluar</Badge>
+          ) : null}
         </div>
 
         <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

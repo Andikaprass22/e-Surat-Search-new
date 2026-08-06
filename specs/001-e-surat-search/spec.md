@@ -12,6 +12,32 @@
 - Q: Penanganan Brute-force Login → A: Kunci akun selama 5 menit setelah 5 percobaan gagal berturut-turut.
 - Q: Penghapusan Kategori Dokumen → A: Cegah Penghapusan (sistem menolak hapus jika masih ada dokumen terkait).
 
+## Revisi Dosen Pembimbing & Keputusan Desain
+
+**Sumber**: Masukan pembimbing (2026) — sistem harus berperilaku sebagai *Sistem Informasi Kearsipan Surat*, bukan sekadar *Document Search System*.
+
+### Keputusan Desain
+
+1. **Penanggung jawab input data**: Administrator adalah satu-satunya pengelola arsip. Semua data surat (surat masuk & keluar) dimasukkan oleh Administrator melalui modul manajemen dokumen. Pengguna hanya membaca hasil pencarian.
+2. **Cakupan surat**: Sistem mengelola **keduanya** — Surat Masuk dan Surat Keluar — dibedakan dengan kolom `jenis` (SURAT_MASUK / SURAT_KELUAR) pada entitas `Document`. Tidak ada tabel terpisah agar mesin pencarian TF-IDF tetap satu corpus.
+3. **Manajemen arsip**: Selain pencarian, sistem menyediakan atribut kearsipan (pengirim, penerima, perihal, disposisi, lokasi arsip, status arsip, tanggal terima) dan log aktivitas pengelolaan. Seluruh atribut baru bersifat **opsional** sehingga data lama tetap valid tanpa backfill.
+4. **Dashboard Administrator**: Menampilkan Total Surat Masuk dan Total Surat Keluar di samping metrik yang sudah ada.
+
+### Pemetaan Masalah Proses Manual → Solusi Sistem
+
+| Masalah pada proses manual | Solusi pada sistem |
+|---|---|
+| Pencatatan surat pada buku agenda manual rentan hilang/rusak | Data surat tersimpan permanen di database (tabel `documents`) |
+| Pencarian arsip manual memakan waktu lama | Pencarian TF-IDF dengan skor relevansi dan hasil <5 detik |
+| Surat masuk/keluar tidak terklasifikasi | Kolom `jenis` (masuk/keluar) + kategori dokumen |
+| Tidak ada pelacakan disposisi surat | Kolom `disposisi` pada setiap arsip |
+| Lokasi arsip fisik sulit ditemukan | Kolom `lokasiArsip` (lemari/rak/box) pada setiap arsip |
+| Tidak ada jejak pengelolaan (siapa mengubah apa) | Log aktivitas `DocumentLog` tercatat otomatis pada setiap aksi |
+| Tidak ada statistik arsip untuk pengambilan keputusan | Dashboard statistik: total surat masuk, keluar, kategori, dan pengguna |
+| Surat lama hilang/tidak terkendali masa simpannya | Kolom `statusArsip` (AKTIF / RETENSI / DIMUSNAHKAN) |
+
+---
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Autentikasi dan Kontrol Akses (Priority: P1)

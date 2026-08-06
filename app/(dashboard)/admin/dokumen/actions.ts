@@ -42,9 +42,68 @@ async function logError(scope: string, err: unknown) {
   console.error(`[admin/dokumen/actions] ${scope}:`, err);
 }
 
+function readArsipFields(formData: FormData) {
+  const optionalText = (key: string) => {
+    const value = String(formData.get(key) ?? "").trim();
+    return value.length > 0 ? value : null;
+  };
+
+  const jenis = optionalText("jenis");
+  const statusArsip = optionalText("statusArsip");
+  const tanggalTerimaRaw = optionalText("tanggalTerima");
+
+  let tanggalTerima: Date | null = null;
+  if (tanggalTerimaRaw) {
+    const parsed = new Date(tanggalTerimaRaw);
+    if (!isNaN(parsed.getTime())) tanggalTerima = parsed;
+  }
+
+  return {
+    jenis: jenis === "SURAT_MASUK" || jenis === "SURAT_KELUAR" ? jenis : null,
+    pengirim: optionalText("pengirim"),
+    penerima: optionalText("penerima"),
+    perihal: optionalText("perihal"),
+    disposisi: optionalText("disposisi"),
+    lokasiArsip: optionalText("lokasiArsip"),
+    statusArsip: statusArsip === "AKTIF" || statusArsip === "RETENSI" || statusArsip === "DIMUSNAHKAN" ? statusArsip : null,
+    tanggalTerima,
+  };
+}
+
+async function createDocumentLog(
+  documentId: string,
+  userId: string,
+  aksi: string,
+  keterangan: string | null = null
+) {
+  await prisma.documentLog.create({
+    data: { documentId, userId, aksi, keterangan },
+  });
+}
+
 export async function fetchDokumenDetailAction(
   id: string
-): Promise<ActionResult & { dokumen?: { id: string; title: string; documentNumber: string; content: string; documentDate: string; categoryId: string; kategoriName: string } }> {
+): Promise<
+  ActionResult & {
+    dokumen?: {
+      id: string;
+      title: string;
+      documentNumber: string;
+      content: string;
+      documentDate: string;
+      categoryId: string;
+      kategoriName: string;
+      jenis: string | null;
+      pengirim: string | null;
+      penerima: string | null;
+      perihal: string | null;
+      disposisi: string | null;
+      lokasiArsip: string | null;
+      statusArsip: string | null;
+      tanggalTerima: string | null;
+    };
+  }
+> {
   console.log(`[fetchDokumenDetailAction] Mengambil detail dokumen ID: ${id}...`);
 
   try {
@@ -58,6 +117,14 @@ export async function fetchDokumenDetailAction(
         documentDate: true,
         categoryId: true,
         category: { select: { name: true } },
+        jenis: true,
+        pengirim: true,
+        penerima: true,
+        perihal: true,
+        disposisi: true,
+        lokasiArsip: true,
+        statusArsip: true,
+        tanggalTerima: true,
       },
     });
 
@@ -73,6 +140,16 @@ export async function fetchDokumenDetailAction(
         documentDate: doc.documentDate.toISOString().split("T")[0]!,
         categoryId: doc.categoryId,
         kategoriName: doc.category.name,
+        jenis: doc.jenis,
+        pengirim: doc.pengirim,
+        penerima: doc.penerima,
+        perihal: doc.perihal,
+        disposisi: doc.disposisi,
+        lokasiArsip: doc.lokasiArsip,
+        statusArsip: doc.statusArsip,
+        tanggalTerima: doc.tanggalTerima
+          ? doc.tanggalTerima.toISOString().split("T")[0]!
+          : null,
       },
     };
   } catch (err) {
@@ -124,6 +201,8 @@ export async function createDokumenAction(
   const category = await prisma.category.findUnique({ where: { id: categoryId } });
   if (!category) return { ok: false, error: "Kategori tidak ditemukan." };
 
+  const arsip = readArsipFields(formData);
+
   try {
     const doc = await prisma.document.create({
       data: {
@@ -134,6 +213,14 @@ export async function createDokumenAction(
         documentDate: dateValue,
         categoryId,
         createdById: admin.id,
+        jenis: arsip.jenis,
+        pengirim: arsip.pengirim,
+        penerima: arsip.penerima,
+        perihal: arsip.perihal,
+        disposisi: arsip.disposisi,
+        lokasiArsip: arsip.lokasiArsip,
+        statusArsip: arsip.statusArsip,
+        tanggalTerima: arsip.tanggalTerima,
       },
     });
 
@@ -146,6 +233,8 @@ export async function createDokumenAction(
     }
 
     console.log(`[createDokumenAction] Dokumen dibuat ID: ${doc.id}, indexing di-background...`);
+
+    await createDocumentLog(doc.id, admin.id, "CREATE", `Dokumen "${doc.title}" ditambahkan`);
 
     triggerTfidfIndexing(doc.id).catch((err) =>
       console.error(`[createDokumenAction] Background indexing gagal:`, err)
@@ -207,6 +296,8 @@ export async function updateDokumenAction(
     return { ok: false, error: "Format tanggal tidak valid." };
   }
 
+  const arsip = readArsipFields(formData);
+
   try {
     const existing = await prisma.document.findUnique({
       where: { id: dokumenId },
@@ -230,10 +321,20 @@ export async function updateDokumenAction(
         documentDate: dateValue,
         categoryId,
         updatedById: admin.id,
+        jenis: arsip.jenis,
+        pengirim: arsip.pengirim,
+        penerima: arsip.penerima,
+        perihal: arsip.perihal,
+        disposisi: arsip.disposisi,
+        lokasiArsip: arsip.lokasiArsip,
+        statusArsip: arsip.statusArsip,
+        tanggalTerima: arsip.tanggalTerima,
       },
     });
 
     console.log(`[updateDokumenAction] Dokumen diperbarui ID: ${dokumenId}, re-indexing di-background...`);
+
+    await createDocumentLog(dokumenId, admin.id, "UPDATE", `Dokumen "${title}" diperbarui`);
 
     triggerTfidfIndexing(dokumenId).catch((err) =>
       console.error(`[updateDokumenAction] Background indexing gagal:`, err)
@@ -291,13 +392,17 @@ export async function deleteDokumenAction(
   dokumenId: string
 ): Promise<ActionResult> {
   console.log(`[deleteDokumenAction] Menghapus dokumen ID: ${dokumenId}...`);
-  await requireAdmin();
+  const admin = await requireAdmin();
 
   try {
     const doc = await prisma.document.findUnique({
       where: { id: dokumenId },
-      select: { filePath: true },
+      select: { filePath: true, title: true },
     });
+
+    if (doc) {
+      await createDocumentLog(dokumenId, admin.id, "DELETE", `Dokumen "${doc.title}" dihapus`);
+    }
 
     await prisma.documentTerm.deleteMany({
       where: { documentId: dokumenId },

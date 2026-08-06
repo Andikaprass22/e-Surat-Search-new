@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRef, useState, useEffect, useCallback } from "react";
-import { Loader2, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { SearchResults } from "@/components/pencarian/search-results";
 import { EmptySearch } from "@/components/pencarian/empty-search";
 import type { SearchResultItem } from "@/types";
@@ -80,24 +80,26 @@ export function SearchBar({
   }
 
   return (
-    <div className="space-y-8 sm:space-y-12">
-      <div className="relative group">
+    <div className="space-y-10">
+      <div className="relative">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
         <input
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ketik kata kunci..."
-          className="w-full bg-transparent border-0 border-b-2 border-border/40 pb-3 sm:pb-4 text-2xl sm:text-3xl md:text-5xl font-light outline-none transition-colors placeholder:text-muted-foreground/30 focus:border-primary focus:ring-0 px-0"
+          placeholder="Ketik kata kunci, nomor surat, atau perihal..."
+          className="w-full rounded-xl border border-border bg-card py-3.5 pl-12 pr-12 text-base outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
           autoFocus
         />
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 -mt-1 sm:-mt-2 flex items-center gap-2">
-          {loading && <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin text-muted-foreground" />}
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          {loading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
           {query.length > 0 && !loading && (
             <button
               onClick={handleClear}
-              className="p-1.5 sm:p-2 text-muted-foreground/40 hover:text-foreground transition-colors"
+              aria-label="Bersihkan pencarian"
+              className="p-1.5 text-muted-foreground/50 hover:text-foreground rounded-md transition-colors"
             >
-              <X className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8" />
+              <X className="h-4 w-4" />
             </button>
           )}
         </div>
@@ -111,8 +113,12 @@ export function SearchBar({
 
       {hasSearched && results.length > 0 && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-widest mb-6">
-            Menampilkan {results.length} Hasil Untuk &ldquo;{query}&rdquo;
+          <p className="text-sm text-muted-foreground mb-5">
+            Menampilkan{" "}
+            <span className="font-medium text-foreground">
+              {results.length} dokumen
+            </span>{" "}
+            untuk &ldquo;{query}&rdquo;
           </p>
           <SearchResults results={results} />
         </div>

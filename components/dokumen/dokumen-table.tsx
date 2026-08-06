@@ -84,6 +84,24 @@ export function DokumenTable({
         ),
       },
       {
+        id: "jenis",
+        header: "Jenis",
+        cell: ({ row }) => {
+          const jenis = row.original.arsip?.jenis;
+          if (jenis === "SURAT_MASUK") {
+            return <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600">Surat Masuk</Badge>;
+          }
+          if (jenis === "SURAT_KELUAR") {
+            return <Badge variant="default" className="bg-sky-600 hover:bg-sky-600">Surat Keluar</Badge>;
+          }
+          return <Badge variant="outline">Belum diklasifikasikan</Badge>;
+        },
+        filterFn: (row, _columnId, filterValue) => {
+          if (!filterValue || filterValue === "all") return true;
+          return row.original.arsip?.jenis === filterValue;
+        },
+      },
+      {
         accessorKey: "tanggal",
         header: "Tanggal",
         cell: ({ row }) => {
@@ -169,9 +187,12 @@ export function DokumenTable({
   const currentKategoriFilter =
     (table.getColumn("kategoriName")?.getFilterValue() as string) ?? "all";
 
+  const currentJenisFilter =
+    (table.getColumn("jenis")?.getFilterValue() as string) ?? "all";
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 overflow-x-auto pb-0.5">
         <Input
           placeholder="Cari judul dokumen..."
           value={
@@ -180,8 +201,25 @@ export function DokumenTable({
           onChange={(e) =>
             table.getColumn("judul")?.setFilterValue(e.target.value)
           }
-          className="w-full sm:max-w-sm"
+          className="w-full sm:w-72"
         />
+        <Select
+          value={currentJenisFilter}
+          onValueChange={(val) => {
+            table
+              .getColumn("jenis")
+              ?.setFilterValue(val === "all" ? undefined : val);
+          }}
+        >
+          <SelectTrigger className="w-full sm:w-[160px] shrink-0">
+            <SelectValue placeholder="Semua jenis" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua jenis</SelectItem>
+            <SelectItem value="SURAT_MASUK">Surat Masuk</SelectItem>
+            <SelectItem value="SURAT_KELUAR">Surat Keluar</SelectItem>
+          </SelectContent>
+        </Select>
         <Select
           value={currentKategoriFilter}
           onValueChange={(val) => {
@@ -190,7 +228,7 @@ export function DokumenTable({
               ?.setFilterValue(val === "all" ? undefined : val);
           }}
         >
-          <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectTrigger className="w-full sm:w-[160px] shrink-0">
             <SelectValue placeholder="Semua kategori" />
           </SelectTrigger>
           <SelectContent>

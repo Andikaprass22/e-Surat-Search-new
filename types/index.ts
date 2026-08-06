@@ -1,5 +1,31 @@
 export type UserRole = "admin" | "user";
 
+export const JENIS_SURAT = {
+  MASUK: "SURAT_MASUK",
+  KELUAR: "SURAT_KELUAR",
+} as const;
+
+export type JenisSurat = (typeof JENIS_SURAT)[keyof typeof JENIS_SURAT];
+
+export const STATUS_ARSIP = {
+  AKTIF: "AKTIF",
+  RETENSI: "RETENSI",
+  DIMUSNAHKAN: "DIMUSNAHKAN",
+} as const;
+
+export type StatusArsip = (typeof STATUS_ARSIP)[keyof typeof STATUS_ARSIP];
+
+export interface ArsipMetadata {
+  jenis: JenisSurat | null;
+  pengirim: string | null;
+  penerima: string | null;
+  perihal: string | null;
+  disposisi: string | null;
+  lokasiArsip: string | null;
+  statusArsip: StatusArsip | null;
+  tanggalTerima: string | null;
+}
+
 export interface KategoriListItem {
   id: string;
   name: string;
@@ -26,6 +52,7 @@ export interface DokumenListItem {
   tanggal: Date;
   kategoriId: string;
   kategoriName?: string;
+  arsip?: ArsipMetadata;
 }
 
 export interface DokumenDetail extends DokumenListItem {
@@ -33,6 +60,14 @@ export interface DokumenDetail extends DokumenListItem {
   filePath: string | null;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface DocumentLogItem {
+  id: string;
+  aksi: string;
+  keterangan: string | null;
+  pelaku: string | null;
+  createdAt: Date;
 }
 
 export interface SearchResultItem {

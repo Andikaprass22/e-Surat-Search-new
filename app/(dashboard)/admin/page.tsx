@@ -17,7 +17,9 @@ export default async function AdminDashboardPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-1.5">
         <h1 className="text-2xl font-bold tracking-tight">Beranda Admin</h1>
-        <p className="text-muted-foreground">Ikhtisar sistem dan statistik pencarian keseluruhan.</p>
+        <p className="text-muted-foreground">
+          Ringkasan arsip surat, panel kerja, dan akses fitur sistem.
+        </p>
       </div>
       <Suspense fallback={<DashboardFallback />}>
         <DashboardLoader />
