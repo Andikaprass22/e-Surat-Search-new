@@ -89,12 +89,12 @@ export function DokumenTable({
         cell: ({ row }) => {
           const jenis = row.original.arsip?.jenis;
           if (jenis === "SURAT_MASUK") {
-            return <Badge variant="default" className="bg-emerald-600 hover:bg-emerald-600">Surat Masuk</Badge>;
+            return <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50">Surat Masuk</Badge>;
           }
           if (jenis === "SURAT_KELUAR") {
-            return <Badge variant="default" className="bg-sky-600 hover:bg-sky-600">Surat Keluar</Badge>;
+            return <Badge className="bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-50">Surat Keluar</Badge>;
           }
-          return <Badge variant="outline">Belum diklasifikasikan</Badge>;
+          return <Badge variant="outline" className="bg-white">Belum diklasifikasikan</Badge>;
         },
         filterFn: (row, _columnId, filterValue) => {
           if (!filterValue || filterValue === "all") return true;
@@ -242,13 +242,13 @@ export function DokumenTable({
         </Select>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border">
+      <div className="overflow-x-auto rounded-[10px] border border-border bg-white">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
-              <TableRow key={hg.id} className="bg-muted/50">
+              <TableRow key={hg.id} className="bg-[#F6F8FB] hover:bg-[#F6F8FB]">
                 {hg.headers.map((header) => (
-                  <TableHead key={header.id} className="text-[11px] font-semibold uppercase tracking-wider">
+                  <TableHead key={header.id} className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -275,7 +275,7 @@ export function DokumenTable({
               </TableRow>
             ) : (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="transition-colors hover:bg-muted/30">
+                <TableRow key={row.id} className="h-12 hover:bg-muted/50 transition-colors">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(

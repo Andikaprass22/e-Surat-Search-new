@@ -28,12 +28,12 @@ const statCards: {
   icon: React.ComponentType<{ className?: string }>;
   tone: string;
 }[] = [
-  { key: "totalDokumen", label: "Total Arsip Surat", icon: Archive, tone: "bg-primary/10 text-primary" },
-  { key: "totalSuratMasuk", label: "Surat Masuk", icon: MailOpen, tone: "bg-emerald-500/10 text-emerald-600" },
-  { key: "totalSuratKeluar", label: "Surat Keluar", icon: Send, tone: "bg-sky-500/10 text-sky-600" },
-  { key: "totalKategori", label: "Kategori", icon: FolderTree, tone: "bg-amber-500/10 text-amber-600" },
-  { key: "totalPengguna", label: "Akun Terdaftar", icon: Users, tone: "bg-violet-500/10 text-violet-600" },
-  { key: "penggunaAktif", label: "Akun Aktif", icon: UserCheck, tone: "bg-teal-500/10 text-teal-600" },
+  { key: "totalDokumen", label: "Total Arsip", icon: Archive, tone: "bg-[#173F5F] text-white" },
+  { key: "totalSuratMasuk", label: "Surat Masuk", icon: MailOpen, tone: "bg-emerald-50 text-emerald-700 border border-emerald-200" },
+  { key: "totalSuratKeluar", label: "Surat Keluar", icon: Send, tone: "bg-sky-50 text-sky-700 border border-sky-200" },
+  { key: "totalKategori", label: "Kategori", icon: FolderTree, tone: "bg-amber-50 text-amber-700 border border-amber-200" },
+  { key: "totalPengguna", label: "Akun Terdaftar", icon: Users, tone: "bg-slate-50 text-slate-700 border border-slate-200" },
+  { key: "penggunaAktif", label: "Akun Aktif", icon: UserCheck, tone: "bg-teal-50 text-teal-700 border border-teal-200" },
 ];
 
 const adminShortcuts = [
@@ -78,89 +78,72 @@ export function AdminDashboard({ stats }: { stats: DashboardStats }) {
       initial="hidden"
       animate="show"
       variants={{ show: { transition: { staggerChildren: 0.05 } } }}
-      className="pb-12 space-y-14"
+      className="pb-8 space-y-8"
     >
-      {/* Metrics */}
       <motion.div variants={fadeUp}>
-        <div className="mb-6 flex items-baseline justify-between">
-          <h2 className="text-sm font-semibold text-foreground">
-            Ringkasan Arsip
-          </h2>
-          <span className="text-xs text-muted-foreground">
-            Data arsip terkini
-          </span>
+        <div className="mb-4 flex items-baseline justify-between">
+          <h2 className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground">Ringkasan Arsip</h2>
+          <span className="text-xs text-muted-foreground">Data terkini</span>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
           {statCards.map((s) => (
             <div
               key={s.key}
-              className="flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-4"
+              className="flex flex-col gap-3 rounded-[10px] border border-border bg-white p-4"
             >
-              <div className={`inline-flex w-fit rounded-lg p-2 ${s.tone}`}>
+              <div className={`inline-flex w-fit rounded-[8px] p-2 ${s.tone}`}>
                 <s.icon className="h-4 w-4" />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-semibold tracking-tight tabular-nums">
+                <span className="text-2xl font-semibold tracking-tight tabular-nums text-[#172B3A]">
                   {stats[s.key].toLocaleString("id-ID")}
                 </span>
-                <span className="text-xs text-muted-foreground mt-0.5">
-                  {s.label}
-                </span>
+                <span className="text-xs text-muted-foreground mt-0.5">{s.label}</span>
               </div>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* Admin actions */}
       <motion.div variants={fadeUp}>
-        <h2 className="text-sm font-semibold text-foreground mb-4">
-          Panel Kerja
-        </h2>
-        <div className="grid md:grid-cols-3 gap-4">
+        <h2 className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground mb-3">Panel Kerja</h2>
+        <div className="grid md:grid-cols-3 gap-3">
           {adminShortcuts.map((s) => (
             <Link
               key={s.url}
               href={s.url}
-              className="group flex flex-col gap-3 rounded-xl border border-border/60 bg-card p-5 transition-all hover:border-primary/40 hover:shadow-md"
+              className="group flex flex-col gap-3 rounded-[10px] border border-border bg-white p-5 transition-colors hover:border-[#173F5F]/20"
             >
               <div className="flex items-center justify-between">
-                <div className="rounded-lg bg-primary/10 p-2.5 text-primary">
-                  <s.icon className="h-5 w-5" />
+                <div className="rounded-[8px] bg-[#173F5F] p-2.5 text-white">
+                  <s.icon className="h-4 w-4" />
                 </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-primary transition-all group-hover:translate-x-0.5" />
+                <ArrowRight className="h-4 w-4 text-muted-foreground/40 group-hover:text-[#173F5F] transition-colors" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-foreground">{s.title}</p>
-                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  {s.desc}
-                </p>
+                <p className="text-sm font-semibold text-[#172B3A]">{s.title}</p>
+                <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{s.desc}</p>
               </div>
             </Link>
           ))}
         </div>
       </motion.div>
 
-      {/* User features */}
       <motion.div variants={fadeUp}>
-        <h2 className="text-sm font-semibold text-foreground mb-4">
-          Fitur Umum
-        </h2>
-        <div className="grid md:grid-cols-2 gap-4">
+        <h2 className="text-[11px] font-semibold tracking-widest uppercase text-muted-foreground mb-3">Fitur Umum</h2>
+        <div className="grid md:grid-cols-2 gap-3">
           {userShortcuts.map((s) => (
             <Link
               key={s.url}
               href={s.url}
-              className="group flex items-center gap-4 rounded-xl border border-border/60 bg-card p-4 transition-all hover:border-primary/40 hover:shadow-sm"
+              className="group flex items-center gap-4 rounded-[10px] border border-border bg-white p-4 transition-colors hover:border-[#173F5F]/20"
             >
-              <div className="rounded-lg bg-muted p-2.5 text-muted-foreground group-hover:text-primary transition-colors">
-                <s.icon className="h-5 w-5" />
+              <div className="rounded-[8px] bg-muted p-2.5 text-muted-foreground group-hover:text-[#173F5F] transition-colors">
+                <s.icon className="h-4 w-4" />
               </div>
               <div className="min-w-0">
-                <p className="text-sm font-medium text-foreground">{s.title}</p>
-                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
-                  {s.desc}
-                </p>
+                <p className="text-sm font-medium text-[#172B3A]">{s.title}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{s.desc}</p>
               </div>
             </Link>
           ))}

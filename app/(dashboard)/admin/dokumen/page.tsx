@@ -28,18 +28,18 @@ export default async function SemuaDokumenPage({
         : null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-[1280px] mx-auto w-full">
       <div className="flex flex-col gap-1.5">
-        <h1 className="text-2xl font-bold tracking-tight">
+        <p className="text-[11px] font-medium tracking-widest uppercase text-muted-foreground">Administrator · Arsip</p>
+        <h1 className="text-2xl font-semibold tracking-tight text-[#172B3A]">
           {jenisFilter === JENIS_SURAT.MASUK
             ? "Arsip Surat Masuk"
             : jenisFilter === JENIS_SURAT.KELUAR
               ? "Arsip Surat Keluar"
               : "Kelola Arsip Surat"}
         </h1>
-        <p className="text-muted-foreground">
-          Dikelola oleh Administrator — tambah, ubah, atau hapus arsip surat.
-          Perubahan akan terindeks otomatis untuk pencarian TF-IDF.
+        <p className="text-sm text-muted-foreground max-w-2xl">
+          Dikelola oleh Administrator — tambah, ubah, atau hapus arsip surat. Perubahan akan terindeks otomatis untuk pencarian TF-IDF.
         </p>
       </div>
       <Suspense fallback={<DokumenFallback />}>

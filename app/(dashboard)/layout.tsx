@@ -28,7 +28,7 @@ async function DashboardShell({
       <AppSidebar user={user} />
       <SidebarInset>
         <Header user={user} />
-        <div className="flex min-w-0 grow flex-col px-4 py-6 md:px-8 md:py-8">{children}</div>
+        <div className="flex min-w-0 grow flex-col bg-[#F6F8FB] px-4 py-6 md:px-8 md:py-8">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   );

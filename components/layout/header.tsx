@@ -16,7 +16,7 @@ export function Header({ user }: { user: AuthUser }) {
   const isAdmin = user.role === "admin";
   
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border/40 bg-background/80 backdrop-blur-md px-4 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-white px-4 lg:px-8">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="-ml-2 text-muted-foreground hover:text-foreground transition-colors" />
       </div>

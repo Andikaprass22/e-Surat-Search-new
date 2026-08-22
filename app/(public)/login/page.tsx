@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -33,42 +34,50 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Brand/Hero Side */}
-      <div className="hidden md:flex flex-1 bg-zinc-950 p-12 flex-col justify-between text-zinc-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      <div className="hidden md:flex flex-1 bg-[#173F5F] p-12 flex-col justify-between text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-16">
-            <div className="h-8 w-8 bg-zinc-50 rounded-sm flex items-center justify-center">
-              <div className="w-4 h-4 bg-zinc-950 rounded-[2px]" />
-            </div>
-            <span className="font-semibold text-lg tracking-wide">E-SURAT</span>
+            <Image
+              src="/logo.png"
+              alt="Logo e-Surat"
+              width={36}
+              height={36}
+              className="object-contain shrink-0"
+              style={{ background: "transparent" }}
+              priority
+            />
+            <span className="font-semibold text-lg tracking-wide">e-SURAT</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-light tracking-tight leading-tight max-w-md">
-            Sistem manajemen dan pencarian arsip presisi.
+          <p className="text-[11px] font-medium tracking-widest text-white/60 uppercase mb-4">Sistem Informasi Kearsipan</p>
+          <h1 className="text-4xl font-semibold tracking-tight leading-tight max-w-md">
+            Pengelolaan arsip surat yang tertib dan mudah ditelusuri.
           </h1>
+          <p className="text-sm text-white/70 mt-4 max-w-md leading-relaxed">
+            Pencarian presisi dengan TF-IDF, klasifikasi surat masuk & keluar, dan jejak audit terpusat.
+          </p>
         </div>
-        <div className="relative z-10 text-sm text-zinc-400 font-light">
-          &copy; {new Date().getFullYear()} Kementerian / Lembaga. All rights reserved.
+        <div className="relative z-10 text-xs text-white/50">
+          &copy; {new Date().getFullYear()} Sistem Kearsipan · Akses terbatas
         </div>
       </div>
 
-      {/* Form Side */}
-      <div className="flex-1 flex items-center justify-center p-8 md:p-12 bg-background">
+      <div className="flex-1 flex items-center justify-center p-8 md:p-12 bg-[#F6F8FB]">
         <motion.div
-          className="w-full max-w-sm space-y-10"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="w-full max-w-sm space-y-8"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
         >
           <div>
-            <h2 className="text-2xl sm:text-3xl font-light tracking-tight mb-2">Selamat Datang</h2>
-            <p className="text-muted-foreground text-sm font-light">
-              Silakan masuk ke akun Anda untuk melanjutkan.
+            <h2 className="text-2xl font-semibold tracking-tight text-[#172B3A]">Masuk ke Sistem</h2>
+            <p className="text-sm text-[#64748B] mt-1.5">
+              Gunakan nama pengguna dan kata sandi yang terdaftar.
             </p>
           </div>
 
-          <form action={formAction} className="space-y-8">
-            <div className="space-y-6">
+          <form action={formAction} className="space-y-6">
+            <div className="space-y-5">
               <div className="space-y-1.5">
                 <Label htmlFor="username" className="text-[11px] font-medium uppercase tracking-widest text-muted-foreground">Nama Pengguna</Label>
                 <Input
@@ -78,7 +87,7 @@ export default function LoginPage() {
                   placeholder="admin"
                   autoComplete="username"
                   required
-                  className="rounded-[10px] border-border/60 px-3 py-2 h-auto focus-visible:ring-0 shadow-none bg-transparent text-base transition-colors"
+                  className="rounded-[8px] border-border bg-white h-10 focus-visible:ring-primary/20"
                 />
               </div>
               <div className="space-y-1.5">
@@ -89,21 +98,18 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   autoComplete="current-password"
                   required
-                  className="rounded-[10px] border-border/60 py-2 h-auto focus-visible:ring-0 shadow-none bg-transparent text-base transition-colors"
+                  className="rounded-[8px] border-border bg-white h-10 focus-visible:ring-primary/20"
                 />
               </div>
             </div>
 
             {state.error ? (
-              <div
-                role="alert"
-                className="text-sm text-destructive font-medium"
-              >
+              <div role="alert" className="rounded-[8px] border border-destructive/20 bg-destructive/5 px-3 py-2.5 text-sm text-destructive">
                 {state.error}
               </div>
             ) : null}
 
-            <Button type="submit" className="w-full h-12 rounded-sm text-xs font-semibold uppercase tracking-widest" disabled={pending}>
+            <Button type="submit" className="w-full h-11 rounded-[8px] text-sm font-medium" disabled={pending}>
               {pending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

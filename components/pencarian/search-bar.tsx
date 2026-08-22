@@ -80,15 +80,15 @@ export function SearchBar({
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B] pointer-events-none" />
         <input
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ketik kata kunci, nomor surat, atau perihal..."
-          className="w-full rounded-xl border border-border bg-card py-3.5 pl-12 pr-12 text-base outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+          className="w-full rounded-[10px] border border-border bg-white py-3.5 pl-12 pr-12 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/60 focus:border-[#173F5F]/30 focus:ring-2 focus:ring-[#173F5F]/10"
           autoFocus
         />
         <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
