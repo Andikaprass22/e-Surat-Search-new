@@ -200,13 +200,13 @@ model LoginAttempt {
 }
 
 model DocumentLog {
-  id         String   @id @default(cuid())
-  documentId String
-  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  documentId String?
+  document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
   userId     String
   aksi       String
   keterangan String?
-  createdAt  DateTime @default(now())
+  createdAt  DateTime  @default(now())
 
   @@index([documentId])
   @@index([userId])

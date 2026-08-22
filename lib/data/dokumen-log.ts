@@ -15,11 +15,18 @@ export async function getDocumentLogs(
     orderBy: { createdAt: "desc" },
   });
 
+  const userIds = [...new Set(rows.map((r) => r.userId))];
+  const users = await prisma.user.findMany({
+    where: { id: { in: userIds } },
+    select: { id: true, name: true, username: true },
+  });
+  const userMap = new Map(users.map((u) => [u.id, u.username ?? u.name]));
+
   return rows.map((r) => ({
     id: r.id,
     aksi: r.aksi,
     keterangan: r.keterangan,
-    pelaku: r.userId,
+    pelaku: userMap.get(r.userId) ?? r.userId,
     createdAt: r.createdAt,
   }));
 }

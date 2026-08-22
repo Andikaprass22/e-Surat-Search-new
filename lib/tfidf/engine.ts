@@ -17,13 +17,23 @@ export async function triggerTfidfIndexing(documentId: string): Promise<void> {
     return;
   }
 
+  const oldTermsRows = await prisma.documentTerm.findMany({
+    where: { documentId },
+    select: { term: true },
+  });
+  const oldTerms = oldTermsRows.map((r) => r.term);
+
   const fullText = `${doc.title} ${doc.content}`;
   const tokens = tokenize(fullText);
 
   if (tokens.length === 0) {
     console.log(`[triggerTfidfIndexing] Tidak ada token untuk dokumen ${documentId}, menghapus terms lama...`);
     await prisma.documentTerm.deleteMany({ where: { documentId } });
-    await recalculateGlobalIdf();
+    if (oldTerms.length > 0) {
+      await recalculateGlobalIdf(oldTerms);
+    } else {
+      await recalculateGlobalIdf();
+    }
     return;
   }
 
@@ -36,10 +46,12 @@ export async function triggerTfidfIndexing(documentId: string): Promise<void> {
 
   await prisma.documentTerm.deleteMany({ where: { documentId } });
 
-  const affectedTerms = Object.keys(termFreq);
+  const newTerms = Object.keys(termFreq);
+  const affectedSet = new Set([...oldTerms, ...newTerms]);
+  const affectedTerms = [...affectedSet];
 
   await prisma.documentTerm.createMany({
-    data: affectedTerms.map((term) => ({
+    data: newTerms.map((term) => ({
       documentId,
       term,
       tf: termFreq[term] / totalTerms,
@@ -47,7 +59,7 @@ export async function triggerTfidfIndexing(documentId: string): Promise<void> {
     })),
   });
 
-  console.log(`[triggerTfidfIndexing] ${affectedTerms.length} terms di-upsert untuk dokumen ${documentId}`);
+  console.log(`[triggerTfidfIndexing] ${newTerms.length} terms di-upsert untuk dokumen ${documentId} (union ${affectedTerms.length} terms termasuk ${oldTerms.length} lama)`);
 
   await recalculateGlobalIdf(affectedTerms);
 }
@@ -91,7 +103,7 @@ export async function recalculateGlobalIdf(affectedTerms?: string[]): Promise<vo
 
     for (const g of grouped) {
       const docCount = g._count.documentId;
-      const idf = Math.log(totalDocs / (docCount + 1)) + 1;
+      const idf = Math.log(totalDocs / docCount) + 1;
 
       await prisma.globalTermIdf.upsert({
         where: { term: g.term },
@@ -251,7 +263,7 @@ export async function computeSearchResults(query: string, index: TfidfIndex, use
 }
 
 export async function searchDocuments(query: string, index: TfidfIndex): Promise<SearchResultItem[]> {
-  console.log(`[searchDocuments] Pencarian langsung: "${query}"`);
+  console.log(`[searchDocuments] Pencarian langsung (tanpa history): "${query}"`);
 
   const { ranked, matchedDocs } = await rankDocuments(query, index);
   if (ranked.length === 0) return [];

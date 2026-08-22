@@ -105,6 +105,8 @@ async function seed() {
       const template = pick(TEMPLATES);
       const topic = pick(TOPICS);
       const judul = template.replace("{topik}", topic);
+      const jenis = Math.random() > 0.5 ? "SURAT_MASUK" : "SURAT_KELUAR";
+      const statusArsip = pick(["AKTIF", "RETENSI", "DIMUSNAHKAN"] as const);
       docs.push({
         title: judul,
         documentNumber: generateNomorSurat(created),
@@ -112,6 +114,11 @@ async function seed() {
         documentDate: randomDate(new Date("2020-01-01"), new Date("2026-06-30")),
         categoryId,
         createdById: admin.id,
+        jenis,
+        statusArsip,
+        pengirim: jenis === "SURAT_MASUK" ? pick(["Dinas Pendidikan", "BPKAD", "Sekretariat Daerah"]) : null,
+        penerima: jenis === "SURAT_KELUAR" ? pick(["Camat", "Kepala Desa", "OPD Terkait"]) : null,
+        perihal: judul,
       });
       created++;
     }

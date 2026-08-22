@@ -105,6 +105,7 @@ export async function fetchDokumenDetailAction(
   }
 > {
   console.log(`[fetchDokumenDetailAction] Mengambil detail dokumen ID: ${id}...`);
+  await requireAdmin();
 
   try {
     const doc = await prisma.document.findUnique({
@@ -362,6 +363,7 @@ export async function getNextDocumentNumber(
   categoryId: string
 ): Promise<ActionResult & { documentNumber?: string }> {
   console.log(`[getNextDocumentNumber] Menghitung nomor surat untuk kategori ID: ${categoryId}...`);
+  await requireAdmin();
 
   try {
     const category = await prisma.category.findUnique({

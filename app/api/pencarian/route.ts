@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidateTag } from "next/cache";
 import { requireSession } from "@/lib/auth-helpers";
-import { getTfidfIndex, searchDocuments } from "@/lib/tfidf/engine";
+import { getTfidfIndex } from "@/lib/tfidf/engine";
+import { prisma } from "@/lib/prisma";
+import { CACHE_TAGS } from "@/lib/constants";
 import type { SearchResultItem } from "@/types";
 
 export type SearchApiResponse =
@@ -24,8 +27,9 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  let user;
   try {
-    await requireSession();
+    user = await requireSession();
   } catch {
     return NextResponse.json<SearchApiResponse>(
       { ok: false, error: "Sesi tidak valid. Silakan login ulang." },
@@ -34,10 +38,25 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    console.log(`[api/pencarian] Pencarian live: "${query}"`);
+    console.log(`[api/pencarian] Pencarian live: "${query}" oleh ${user.id}`);
     const index = await getTfidfIndex();
-    const results = await searchDocuments(query, index);
-
+    const { searchDocuments: doSearch } = await import("@/lib/tfidf/engine");
+    const results = await doSearch(query, index);
+    if (results.length > 0) {
+      const history = await prisma.searchHistory.create({
+        data: { userId: user.id, query, resultCount: results.length },
+      });
+      const rankedForHistory = results.map((r, i) => ({
+        searchHistoryId: history.id,
+        documentId: r.dokumenId,
+        relevanceScore: r.relevanceScore,
+        rank: i + 1,
+      }));
+      await prisma.searchResult.createMany({ data: rankedForHistory });
+      revalidateTag(CACHE_TAGS.RIWAYAT(user.id), "max");
+      revalidateTag(CACHE_TAGS.RIWAYAT_ALL, "max");
+      revalidateTag(CACHE_TAGS.LAPORAN(user.id), "max");
+    }
     return NextResponse.json<SearchApiResponse>({ ok: true, results });
   } catch (err) {
     console.error("[api/pencarian] Error:", err);

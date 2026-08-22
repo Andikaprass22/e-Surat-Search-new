@@ -149,7 +149,10 @@ export async function updateUserAction(
 
 export async function banUserAction(userId: string): Promise<ActionResult> {
   console.log(`[banUserAction] Memblokir pengguna ID: ${userId}...`);
-  await requireAdmin();
+  const admin = await requireAdmin();
+  if (admin.id === userId) {
+    return { ok: false, error: "Tidak dapat memblokir akun sendiri." };
+  }
   const hdrs = await headers();
 
   try {
@@ -198,7 +201,15 @@ export async function unbanUserAction(userId: string): Promise<ActionResult> {
 
 export async function deleteUserAction(userId: string): Promise<ActionResult> {
   console.log(`[deleteUserAction] Menghapus pengguna ID: ${userId}...`);
-  await requireAdmin();
+  const admin = await requireAdmin();
+  if (admin.id === userId) {
+    return { ok: false, error: "Tidak dapat menghapus akun sendiri." };
+  }
+  const adminCount = await prisma.user.count({ where: { role: "admin" } });
+  const target = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+  if (target?.role === "admin" && adminCount <= 1) {
+    return { ok: false, error: "Tidak dapat menghapus admin terakhir." };
+  }
   const hdrs = await headers();
 
   try {

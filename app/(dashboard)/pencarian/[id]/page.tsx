@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Calendar, FileText, FolderTree, Hash, Download } from "lucide-react";
+import { ArrowLeft, Calendar, FileText, FolderTree, Hash, Download, MailOpen, Send, Archive, MapPin, Users2, Route } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,15 @@ export default async function DokumenViewPage({
     month: "long",
     year: "numeric",
   });
+  const tanggalTerima = dokumen.arsip?.tanggalTerima
+    ? new Date(dokumen.arsip.tanggalTerima).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "—";
+  const jenis = dokumen.arsip?.jenis;
+  const statusArsip = dokumen.arsip?.statusArsip;
 
   return (
     <Card className="border-2">
@@ -74,6 +83,56 @@ export default async function DokumenViewPage({
             <FolderTree className="h-4 w-4 text-muted-foreground" />
             <span className="text-muted-foreground">Kategori:</span>
             <Badge variant="secondary">{dokumen.kategoriName ?? "—"}</Badge>
+          </div>
+        </div>
+
+        <Separator />
+
+        <div>
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+            Informasi Kearsipan
+          </h2>
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-2 text-sm">
+              {jenis === "SURAT_MASUK" ? <MailOpen className="h-4 w-4 text-muted-foreground" /> : <Send className="h-4 w-4 text-muted-foreground" />}
+              <span className="text-muted-foreground">Jenis Surat:</span>
+              <span className="font-medium">{jenis === "SURAT_MASUK" ? "Surat Masuk" : jenis === "SURAT_KELUAR" ? "Surat Keluar" : "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <Users2 className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Pengirim:</span>
+              <span className="font-medium">{dokumen.arsip?.pengirim ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <Users2 className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Penerima:</span>
+              <span className="font-medium">{dokumen.arsip?.penerima ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <FileText className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Perihal:</span>
+              <span className="font-medium">{dokumen.arsip?.perihal ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <Route className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Disposisi:</span>
+              <span className="font-medium">{dokumen.arsip?.disposisi ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Lokasi Arsip:</span>
+              <span className="font-medium">{dokumen.arsip?.lokasiArsip ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <Archive className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Status Arsip:</span>
+              <span className="font-medium">{statusArsip ?? "—"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Tanggal Terima:</span>
+              <span className="font-medium">{tanggalTerima}</span>
+            </div>
           </div>
         </div>
 

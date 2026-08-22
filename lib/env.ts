@@ -6,7 +6,6 @@ const requiredEnvVars = [
   "BETTER_AUTH_SECRET",
   "BETTER_AUTH_URL",
   "NEXT_PUBLIC_APP_URL",
-  "UPLOADTHING_TOKEN",
 ] as const;
 
 function validateEnv() {
@@ -32,5 +31,4 @@ export const env = {
   BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET!,
   BETTER_AUTH_URL: process.env.BETTER_AUTH_URL!,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL!,
-  UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN!,
 };
